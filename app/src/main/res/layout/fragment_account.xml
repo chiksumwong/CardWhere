@@ -9,7 +9,28 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Account Fragment"
-        android:textSize="40sp"
+        android:textSize="40sp"/>
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/btn_google_sign_in"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_centerInParent="true"/>
+
+    <Button
+        android:id="@+id/btn_google_revoke"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/txt_account"
+        android:layout_marginTop="345dp"
+        android:text="Account Revoke" />
+
+    <Button
+        android:id="@+id/btn_google_sign_out"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btn_google_revoke"
+        android:text="Sign Out" />
+
 
 </RelativeLayout>

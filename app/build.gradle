@@ -31,6 +31,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-core:16.0.8'
     // Firebase Authentication
     implementation 'com.google.firebase:firebase-auth:16.2.1'
+    // Google Sign-in
+    implementation 'com.google.android.gms:play-services-auth:16.0.1'
 
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'

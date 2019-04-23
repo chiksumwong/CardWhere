@@ -9,7 +9,6 @@ import android.view.MenuItem;
 import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
-    private TextView mTextMessage;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -44,7 +43,10 @@ public class MainActivity extends AppCompatActivity {
         // Bottom Navigation
         BottomNavigationView navView = findViewById(R.id.nav_view);
 
-        mTextMessage = findViewById(R.id.message);
+        // Set initial fragment is Card Fragment
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new CardFragment()).commit();
+
+        // Bottom Navigation
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
     }
 
