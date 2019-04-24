@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CardWhere</string>
+    <string name="title_card">名片</string>
+    <string name="title_camera">相機</string>
+    <string name="title_account">用戶</string>
+</resources>

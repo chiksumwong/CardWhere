@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "88293541098",
+    "firebase_url": "https://cardwhere.firebaseio.com",
+    "project_id": "cardwhere",
+    "storage_bucket": "cardwhere.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:88293541098:android:7740b2848571bb3f",
+        "android_client_info": {
+          "package_name": "com.cs.cardwhere"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "88293541098-ntuagvupmuu4si6kmlq41httjtcvovi5.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.cs.cardwhere",
+            "certificate_hash": "b27853157620231974c1750d856c3e10a208a4ba"
+          }
+        },
+        {
+          "client_id": "88293541098-lbh68ere49a39g03r9jq3u0t0bdnqks2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2zspjDliaQ9GMuCUYP4Uv7TJg3sWwFJI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "88293541098-lbh68ere49a39g03r9jq3u0t0bdnqks2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
