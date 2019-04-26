@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <TextView
         android:id="@+id/txt_card"
         android:layout_width="wrap_content"
@@ -11,5 +12,6 @@
         android:text="Card Fragment"
         android:textSize="40sp"
         android:layout_centerInParent="true"/>
+
 
 </RelativeLayout>
