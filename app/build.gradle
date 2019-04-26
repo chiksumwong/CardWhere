@@ -49,6 +49,7 @@ dependencies {
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.7.+'
 
     // Testing - JUnit
+    implementation 'com.google.android.gms:play-services-maps:16.1.0'
     testImplementation 'junit:junit:4.12'
     // Testing - Mockito
     testImplementation 'org.mockito:mockito-core:2.27.0'
