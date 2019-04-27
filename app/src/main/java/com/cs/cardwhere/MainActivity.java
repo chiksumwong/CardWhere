@@ -25,7 +25,7 @@ public class MainActivity extends AppCompatActivity {
 
             switch (item.getItemId()) {
                 case R.id.nav_card:
-                    selectedFragment = new CardFragment();
+                    selectedFragment = new CardListFragment();
                     break;
                 case R.id.nav_camera:
                     selectedFragment = new CameraFragment();
@@ -53,8 +53,8 @@ public class MainActivity extends AppCompatActivity {
         // Bottom Navigation
         BottomNavigationView navView = findViewById(R.id.nav_view);
 
-        // Set initial fragment is Card Fragment
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new CardFragment()).commit();
+        // initial fragment is Card List Fragment
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new CardListFragment()).commit();
 
         // Bottom Navigation
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
@@ -71,9 +71,16 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
+        Intent intent;
+
         switch (item.getItemId()){
             case R.id.add_card:
-                Intent intent = new Intent(this, ScanCardActivity.class);
+                intent = new Intent(this, ScanCardActivity.class);
+                startActivity(intent);
+                return true;
+
+            case R.id.search_card:
+                intent = new Intent(this, MapsActivity.class);
                 startActivity(intent);
                 return true;
 
