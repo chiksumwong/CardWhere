@@ -27,7 +27,7 @@ import com.google.android.gms.vision.text.TextRecognizer;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
-public class ScanCard extends AppCompatActivity {
+public class ScanCardActivity extends AppCompatActivity {
 
     EditText nameEt;
     EditText companyEt;
