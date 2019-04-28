@@ -9,17 +9,16 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
-import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.util.SparseArray;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
@@ -30,11 +29,7 @@ import com.google.android.gms.vision.text.TextRecognizer;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
-import static android.app.Activity.RESULT_OK;
-
-public class CameraFragment extends Fragment {
-
-    View view;
+public class ScanCardActivity extends AppCompatActivity {
 
     EditText nameEt;
     EditText companyEt;
@@ -54,24 +49,17 @@ public class CameraFragment extends Fragment {
 
     Uri image_uri;
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.fragment_camera, container, false);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_scan_card);
 
-        nameEt = view.findViewById(R.id.et_name);
-        companyEt = view.findViewById(R.id.et_company);
-        addressEt = view.findViewById(R.id.et_address);
-        telEt = view.findViewById(R.id.et_tel);
-        emailEt = view.findViewById(R.id.et_email);
-        cardIv = view.findViewById(R.id.iv_card_image);
-
-        return view;
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+        nameEt = findViewById(R.id.et_name);
+        companyEt = findViewById(R.id.et_company);
+        addressEt = findViewById(R.id.et_address);
+        telEt = findViewById(R.id.et_tel);
+        emailEt = findViewById(R.id.et_email);
+        cardIv = findViewById(R.id.iv_card_image);
 
         // Camera Permission
         cameraPermission = new String [] {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
@@ -79,14 +67,40 @@ public class CameraFragment extends Fragment {
         //Storage Permission
         storagePermission = new String [] {Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
-        showImageImportDialog();
 
     }
+
+    // actionbar menu
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.scan_card_toolbar_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    // handle actionbar item clicks
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()){
+            case R.id.done_button:
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
+                return true;
+
+            case R.id.camera_button:
+                showImageImportDialog();
+                return true;
+
+            default: return super.onOptionsItemSelected(item);
+        }
+
+    }
+
 
     private void showImageImportDialog(){
         String [] options = {"Camera", "Gallery"};
 
-        AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 
         // set dialog's title
         dialog.setTitle("Get Card From?");
@@ -128,7 +142,7 @@ public class CameraFragment extends Fragment {
         ContentValues values = new ContentValues();
         values.put(MediaStore.Images.Media.TITLE, "CardWhere"); // title of picture
         values.put(MediaStore.Images.Media.DESCRIPTION, "Scan by CardWhere"); // description of picture
-        image_uri = getActivity().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+        image_uri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, image_uri);
@@ -136,27 +150,27 @@ public class CameraFragment extends Fragment {
     }
 
     private void requestStoragePermission() {
-        ActivityCompat.requestPermissions(getActivity(), storagePermission, STORAGE_REQUEST_CODE);
+        ActivityCompat.requestPermissions(this, storagePermission, STORAGE_REQUEST_CODE);
     }
 
     private boolean checkStoragePermission() {
 
-        boolean result_storage_permission = ContextCompat.checkSelfPermission(getActivity(),
+        boolean result_storage_permission = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) == (PackageManager.PERMISSION_GRANTED);
 
         return result_storage_permission;
     }
 
     private void requestCameraPermission() {
-        ActivityCompat.requestPermissions(getActivity(), cameraPermission, CAMERA_REQUEST_CODE);
+        ActivityCompat.requestPermissions(this, cameraPermission, CAMERA_REQUEST_CODE);
     }
 
     private boolean checkCameraPermission() {
 
-        boolean result_camera_permission = ContextCompat.checkSelfPermission(getActivity(),
+        boolean result_camera_permission = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
 
-        boolean result_storage_permission = ContextCompat.checkSelfPermission(getActivity(),
+        boolean result_storage_permission = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) == (PackageManager.PERMISSION_GRANTED);
 
         return result_camera_permission && result_storage_permission;
@@ -176,7 +190,7 @@ public class CameraFragment extends Fragment {
                     if (cameraAccepted && writeStorageAccepted){
                         pickCamera();
                     }else {
-                        Toast.makeText(getActivity(), "permission denied", Toast.LENGTH_LONG).show();
+                        Toast.makeText(this, "permission denied", Toast.LENGTH_LONG).show();
                     }
                 }
                 break;
@@ -189,7 +203,7 @@ public class CameraFragment extends Fragment {
                     if (writeStorageAccepted){
                         pickGallery();
                     }else {
-                        Toast.makeText(getActivity(), "permission denied", Toast.LENGTH_LONG).show();
+                        Toast.makeText(this, "permission denied", Toast.LENGTH_LONG).show();
                     }
                 }
                 break;
@@ -203,10 +217,10 @@ public class CameraFragment extends Fragment {
         // got image from camera
         if (resultCode == RESULT_OK){
             if (requestCode == IMAGE_PICK_GALLERY_CODE){
-                CropImage.activity(data.getData()).setGuidelines(CropImageView.Guidelines.ON).start(getActivity());
+                CropImage.activity(data.getData()).setGuidelines(CropImageView.Guidelines.ON).start(this);
             }
             if (requestCode == IMAGE_PICK_CAMERA_CODE){
-                CropImage.activity(image_uri).setGuidelines(CropImageView.Guidelines.ON).start(getActivity());
+                CropImage.activity(image_uri).setGuidelines(CropImageView.Guidelines.ON).start(this);
             }
         }
 
@@ -226,10 +240,10 @@ public class CameraFragment extends Fragment {
 
 
                 // Text Recognizer
-                TextRecognizer recognizer = new TextRecognizer.Builder(getActivity().getApplicationContext()).build();
+                TextRecognizer recognizer = new TextRecognizer.Builder(getApplicationContext()).build();
 
                 if (!recognizer.isOperational()){
-                    Toast.makeText(getActivity(), "Recognizer Error", Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, "Recognizer Error", Toast.LENGTH_LONG).show();
                 }else {
                     Frame frame = new Frame.Builder().setBitmap(bitmap).build();
                     SparseArray<TextBlock> items = recognizer.detect(frame);
@@ -247,9 +261,8 @@ public class CameraFragment extends Fragment {
             }else if(resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE){
                 // if there is any error
                 Exception error = result.getError();
-                Toast.makeText(getActivity(), " "+ error, Toast.LENGTH_LONG).show();
+                Toast.makeText(this, " "+ error, Toast.LENGTH_LONG).show();
             }
         }
     }
-
 }
