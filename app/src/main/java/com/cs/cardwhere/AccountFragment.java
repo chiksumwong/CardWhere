@@ -1,5 +1,6 @@
 package com.cs.cardwhere;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -35,6 +36,8 @@ import static android.support.constraint.Constraints.TAG;
 
 public class AccountFragment extends Fragment {
 
+    protected Activity mActivity;
+
     private View view;
 
     // Weights
@@ -51,6 +54,12 @@ public class AccountFragment extends Fragment {
     private static final int RC_SIGN_IN = 101;
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        mActivity = (Activity) context;
+    }
+
+    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
@@ -63,7 +72,7 @@ public class AccountFragment extends Fragment {
                 .build();
 
         // Build a GoogleSignInClient with the options specified by gso.
-        mGoogleSignInClient = GoogleSignIn.getClient(((MainActivity)getActivity()), gso);
+        mGoogleSignInClient = GoogleSignIn.getClient(mActivity, gso);
     }
 
     @Nullable
@@ -148,14 +157,14 @@ public class AccountFragment extends Fragment {
 
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
         mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(((MainActivity)getActivity()), new OnCompleteListener<AuthResult>() {
+                .addOnCompleteListener(mActivity, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Toast.makeText(getActivity(), "Hi :" + user.getEmail(), Toast.LENGTH_LONG).show();
+                            Toast.makeText(mActivity, "Hi :" + user.getEmail(), Toast.LENGTH_LONG).show();
                             accountTxt.setText("Welcome ! " + user.getDisplayName());
                             signInButton.setVisibility(View.GONE);
                             signOutButton.setVisibility(View.VISIBLE);
@@ -181,7 +190,7 @@ public class AccountFragment extends Fragment {
         mAuth.signOut();
 
         // Google sign out
-        mGoogleSignInClient.signOut().addOnCompleteListener(((MainActivity)getActivity()),
+        mGoogleSignInClient.signOut().addOnCompleteListener((mActivity),
                 new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -202,11 +211,11 @@ public class AccountFragment extends Fragment {
 
         // Google revoke access
         mGoogleSignInClient.revokeAccess()
-                .addOnCompleteListener(((MainActivity)getActivity()), new OnCompleteListener<Void>() {
+                .addOnCompleteListener((mActivity), new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         accountTxt.setText("Please Sign In !");
-                        Toast.makeText(getActivity(), "Bye Bye !", Toast.LENGTH_LONG).show();
+                        Toast.makeText(mActivity, "Bye Bye !", Toast.LENGTH_LONG).show();
                     }
                 });
 
