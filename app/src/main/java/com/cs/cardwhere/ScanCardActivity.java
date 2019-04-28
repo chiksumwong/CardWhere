@@ -67,7 +67,7 @@ public class ScanCardActivity extends AppCompatActivity {
         //Storage Permission
         storagePermission = new String [] {Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
-        showImageImportDialog();
+
     }
 
     // actionbar menu
@@ -85,6 +85,10 @@ public class ScanCardActivity extends AppCompatActivity {
             case R.id.done_button:
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
+                return true;
+
+            case R.id.camera_button:
+                showImageImportDialog();
                 return true;
 
             default: return super.onOptionsItemSelected(item);

@@ -4,13 +4,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -25,11 +23,11 @@ public class MainActivity extends AppCompatActivity {
 
             switch (item.getItemId()) {
                 case R.id.nav_card:
-                    selectedFragment = new CardListFragment();
+                    selectedFragment = new CardFragment();
                     break;
-                case R.id.nav_camera:
-                    selectedFragment = new CameraFragment();
-                    break;
+//                case R.id.nav_camera:
+//                    selectedFragment = new CameraFragment();
+//                    break;
                 case R.id.nav_account:
                     selectedFragment = new AccountFragment();
                     break;
@@ -54,7 +52,7 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView navView = findViewById(R.id.nav_view);
 
         // initial fragment is Card List Fragment
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new CardListFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new CardFragment()).commit();
 
         // Bottom Navigation
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
