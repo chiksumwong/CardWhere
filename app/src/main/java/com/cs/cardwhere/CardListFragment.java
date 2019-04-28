@@ -4,35 +4,64 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v7.widget.DividerItemDecoration;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
-import com.google.android.gms.vision.Frame;
+import java.util.ArrayList;
 
 public class CardListFragment extends Fragment {
+
     View view;
+    RecyclerView cardRecyclerView;
+
+    ArrayList<Card> cards = new ArrayList<>();
+    public static final String[] Cards= {"Breaking Bad","Rick and Morty", "FRIENDS","Sherlock","Stranger Things"};
+    public static final int[] CardsImgs = {R.drawable.ic_account_box_black_24dp,R.drawable.ic_account_box_black_24dp,R.drawable.ic_account_box_black_24dp,R.drawable.ic_account_box_black_24dp,R.drawable.ic_account_box_black_24dp};
+
+    CardAdapter cardAdapter;
+
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_card_list, container, false);
 
-
+        initRecyclerView();
+        initData();
 
         return view;
     }
 
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
+    private void initData() {
 
-        MapsFragment mf = new MapsFragment();
+        for(int i=0;i<Cards.length;i++){
+            Card card = new Card(Cards[i], CardsImgs[i]);
+            cards.add(card);
+        }
 
-        FragmentManager fm = getActivity().getSupportFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        ft.add(R.id.card_list_frame_container, mf);
-        ft.commit();
     }
+
+    private void initRecyclerView() {
+        cardRecyclerView = view.findViewById(R.id.card_recycler_view);
+        cardAdapter = new CardAdapter(getActivity(), cards);
+        cardRecyclerView.setAdapter(cardAdapter);
+
+        // recycler view setting
+        cardRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+        cardRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL));
+
+        // OnClick Listener
+        cardAdapter.setOnItemClickListener(new CardAdapter.OnItemClickListener() {
+            @Override
+            public void OnItemClick(View view, Card data) {
+                Toast.makeText(getActivity(),"i am " + data.getCard(),Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
 }

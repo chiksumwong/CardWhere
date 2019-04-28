@@ -40,12 +40,13 @@ public class CardFragment extends Fragment {
     }
 
     private void setViewPager(){
+        // Create Fragment
         CardListFragment cardListFragment = new CardListFragment();
-        MapsFragment mapsFragment = new MapsFragment();
+        CardsMapsFragment cardsMapsFragment = new CardsMapsFragment();
 
         List<Fragment> fragmentList = new ArrayList<Fragment>();
         fragmentList.add(cardListFragment);
-        fragmentList.add(mapsFragment);
+        fragmentList.add(cardsMapsFragment);
 
         CardPagerFragmentAdapter myFragmentAdapter = new CardPagerFragmentAdapter(getActivity().getSupportFragmentManager(), fragmentList);
         mViewPager.setAdapter(myFragmentAdapter);

@@ -8,11 +8,11 @@
         android:id="@+id/txt_card_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Card List Fragment"
+        android:text="Cards in Maps"
         android:textSize="40sp"/>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/card_recycler_view"
+    <LinearLayout
+        android:id="@+id/cards_maps_frame_container"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_below="@+id/txt_card_list"
@@ -21,7 +21,7 @@
         android:layout_marginBottom="0dp"
         android:orientation="horizontal">
 
-    </android.support.v7.widget.RecyclerView>
+    </LinearLayout>
 
 
 </RelativeLayout>
