@@ -7,190 +7,216 @@
     android:layout_height="match_parent"
     tools:context=".ScanCardActivity">
 
-    <ScrollView
+    <!--<ScrollView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content">-->
+        <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:orientation="vertical">-->
+
+            <!--<androidx.cardview.widget.CardView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--app:cardBackgroundColor="#fff"-->
+                <!--app:cardCornerRadius="5dp"-->
+                <!--app:cardElevation="5dp">-->
+                <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="vertical"-->
+                    <!--android:padding="5dp">-->
+
+                    <!--<TextView-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="Name:"-->
+                        <!--android:textSize="30sp"-->
+                        <!--android:textColor="@color/colorPrimary"/>-->
+
+                    <!--<EditText-->
+                        <!--android:id="@+id/et_name"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:hint="Name" />-->
+
+                <!--</LinearLayout>-->
+            <!--</androidx.cardview.widget.CardView>-->
+
+            <!--<androidx.cardview.widget.CardView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--app:cardBackgroundColor="#fff"-->
+                <!--app:cardCornerRadius="5dp"-->
+                <!--app:cardElevation="5dp">-->
+                <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="vertical"-->
+                    <!--android:padding="5dp">-->
+
+                    <!--<TextView-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="Company:"-->
+                        <!--android:textSize="30sp"-->
+                        <!--android:textColor="@color/colorPrimary"/>-->
+
+                    <!--<EditText-->
+                        <!--android:id="@+id/et_company"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:hint="Company" />-->
+
+                <!--</LinearLayout>-->
+            <!--</androidx.cardview.widget.CardView>-->
+
+            <!--<androidx.cardview.widget.CardView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--app:cardBackgroundColor="#fff"-->
+                <!--app:cardCornerRadius="5dp"-->
+                <!--app:cardElevation="5dp">-->
+                <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="vertical"-->
+                    <!--android:padding="5dp">-->
+
+                    <!--<TextView-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="Address:"-->
+                        <!--android:textSize="30sp"-->
+                        <!--android:textColor="@color/colorPrimary"/>-->
+
+                    <!--<EditText-->
+                        <!--android:id="@+id/et_address"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:hint="Address" />-->
+
+                <!--</LinearLayout>-->
+            <!--</androidx.cardview.widget.CardView>-->
+
+            <!--<androidx.cardview.widget.CardView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--app:cardBackgroundColor="#fff"-->
+                <!--app:cardCornerRadius="5dp"-->
+                <!--app:cardElevation="5dp">-->
+                <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="vertical"-->
+                    <!--android:padding="5dp">-->
+
+                    <!--<TextView-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="Tel:"-->
+                        <!--android:textSize="30sp"-->
+                        <!--android:textColor="@color/colorPrimary"/>-->
+
+                    <!--<EditText-->
+                        <!--android:id="@+id/et_tel"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:hint="Tel" />-->
+
+                <!--</LinearLayout>-->
+            <!--</androidx.cardview.widget.CardView>-->
+
+            <!--<androidx.cardview.widget.CardView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--app:cardBackgroundColor="#fff"-->
+                <!--app:cardCornerRadius="5dp"-->
+                <!--app:cardElevation="5dp">-->
+                <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="vertical"-->
+                    <!--android:padding="5dp">-->
+
+                    <!--<TextView-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="Email:"-->
+                        <!--android:textSize="30sp"-->
+                        <!--android:textColor="@color/colorPrimary"/>-->
+
+                    <!--<EditText-->
+                        <!--android:id="@+id/et_email"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:hint="Email" />-->
+
+                <!--</LinearLayout>-->
+            <!--</androidx.cardview.widget.CardView>-->
+
+            <!--<androidx.cardview.widget.CardView-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="wrap_content"-->
+                <!--app:cardBackgroundColor="#fff"-->
+                <!--app:cardCornerRadius="5dp"-->
+                <!--app:cardElevation="5dp">-->
+                <!--<LinearLayout-->
+                    <!--android:layout_width="match_parent"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:orientation="vertical">-->
+
+                    <!--<TextView-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="wrap_content"-->
+                        <!--android:text="Card:"-->
+                        <!--android:textSize="30sp"-->
+                        <!--android:textColor="@color/colorPrimary"/>-->
+
+                    <!--<ImageView-->
+                    <!--android:id="@+id/iv_card_image"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="match_parent"-->
+                        <!--android:scaleType="fitStart"-->
+                        <!--app:layout_constraintTop_toBottomOf="parent"-->
+                        <!--app:layout_constraintBottom_toTopOf="parent"-->
+                        <!--app:layout_constraintLeft_toLeftOf="parent"-->
+                        <!--app:layout_constraintRight_toRightOf="parent"-->
+                        <!--android:contentDescription="select_image_for_text_recognition" />-->
+
+                    <!--<com.cs.cardwhere.GraphicUtils.GraphicOverlay-->
+                        <!--android:id="@+id/graphic_overlay"-->
+                        <!--android:layout_width="match_parent"-->
+                        <!--android:layout_height="match_parent"-->
+                        <!--app:layout_constraintTop_toTopOf="@id/iv_card_image"-->
+                        <!--app:layout_constraintBottom_toBottomOf="@id/iv_card_image"-->
+                        <!--app:layout_constraintLeft_toLeftOf="@id/iv_card_image"-->
+                        <!--app:layout_constraintRight_toRightOf="@id/iv_card_image" />-->
+
+                <!--</LinearLayout>-->
+            <!--</androidx.cardview.widget.CardView>-->
+
+        <!--</LinearLayout>-->
+    <!--</ScrollView>-->
+
+    <ImageView
+        android:id="@+id/iv_card_image"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+        android:layout_height="match_parent"
+        android:scaleType="fitStart"
+        app:layout_constraintTop_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:contentDescription="select_image_for_text_recognition" />
 
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardBackgroundColor="#fff"
-                app:cardCornerRadius="5dp"
-                app:cardElevation="5dp">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="5dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Name:"
-                        android:textSize="30sp"
-                        android:textColor="@color/colorPrimary"/>
-
-                    <EditText
-                        android:id="@+id/et_name"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Name" />
-
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardBackgroundColor="#fff"
-                app:cardCornerRadius="5dp"
-                app:cardElevation="5dp">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="5dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Company:"
-                        android:textSize="30sp"
-                        android:textColor="@color/colorPrimary"/>
-
-                    <EditText
-                        android:id="@+id/et_company"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Company" />
-
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardBackgroundColor="#fff"
-                app:cardCornerRadius="5dp"
-                app:cardElevation="5dp">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="5dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Address:"
-                        android:textSize="30sp"
-                        android:textColor="@color/colorPrimary"/>
-
-                    <EditText
-                        android:id="@+id/et_address"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Address" />
-
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardBackgroundColor="#fff"
-                app:cardCornerRadius="5dp"
-                app:cardElevation="5dp">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="5dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Tel:"
-                        android:textSize="30sp"
-                        android:textColor="@color/colorPrimary"/>
-
-                    <EditText
-                        android:id="@+id/et_tel"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Tel" />
-
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardBackgroundColor="#fff"
-                app:cardCornerRadius="5dp"
-                app:cardElevation="5dp">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="5dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Email:"
-                        android:textSize="30sp"
-                        android:textColor="@color/colorPrimary"/>
-
-                    <EditText
-                        android:id="@+id/et_email"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="Email" />
-
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:cardBackgroundColor="#fff"
-                app:cardCornerRadius="5dp"
-                app:cardElevation="5dp">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    android:padding="5dp">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:text="Card:"
-                        android:textSize="30sp"
-                        android:textColor="@color/colorPrimary"/>
-
-                    <ImageView
-                        android:id="@+id/iv_card_image"
-                        android:layout_width="match_parent"
-                        android:layout_height="250dp"
-                        android:scaleType="fitStart"
-                        app:layout_constraintTop_toBottomOf="parent"
-                        app:layout_constraintBottom_toTopOf="parent"
-                        app:layout_constraintLeft_toLeftOf="parent"
-                        app:layout_constraintRight_toRightOf="parent"
-                        android:contentDescription="Hi" />
-
-
-                </LinearLayout>
-            </androidx.cardview.widget.CardView>
-
-        </LinearLayout>
-    </ScrollView>
-
+    <com.cs.cardwhere.GraphicUtils.GraphicOverlay
+        android:id="@+id/graphic_overlay"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_constraintTop_toTopOf="@id/iv_card_image"
+        app:layout_constraintBottom_toBottomOf="@id/iv_card_image"
+        app:layout_constraintLeft_toLeftOf="@id/iv_card_image"
+        app:layout_constraintRight_toRightOf="@id/iv_card_image" />
 
 </RelativeLayout>

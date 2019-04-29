@@ -50,6 +50,9 @@ dependencies {
     // image crop library
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.7.+'
 
+    // Camera kit
+    implementation 'com.wonderkiln:camerakit:0.13.4'
+
     // Testing - Mockito
     testImplementation 'org.mockito:mockito-core:2.27.0'
     testImplementation 'junit:junit:4.12'

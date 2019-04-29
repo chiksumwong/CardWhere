@@ -11,6 +11,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
@@ -23,6 +24,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.cs.cardwhere.GraphicUtils.CloudTextGraphic;
+import com.cs.cardwhere.GraphicUtils.GraphicOverlay;
+import com.cs.cardwhere.GraphicUtils.TextGraphic;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.ml.vision.FirebaseVision;
@@ -57,31 +61,36 @@ public class ScanCardActivity extends AppCompatActivity {
     Uri image_uri;
 
     private Bitmap mSelectedImage;
+    GraphicOverlay mGraphicOverlay;
+
     // Max width (portrait mode)
-    private Integer mImageMaxWidth;
+    private Integer mImageMaxWidth = 640;
     // Max height (portrait mode)
-    private Integer mImageMaxHeight;
+    private Integer mImageMaxHeight = 480;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan_card);
 
-        nameEt = findViewById(R.id.et_name);
-        companyEt = findViewById(R.id.et_company);
-        addressEt = findViewById(R.id.et_address);
-        telEt = findViewById(R.id.et_tel);
-        emailEt = findViewById(R.id.et_email);
+//        nameEt = findViewById(R.id.et_name);
+//        companyEt = findViewById(R.id.et_company);
+//        addressEt = findViewById(R.id.et_address);
+//        telEt = findViewById(R.id.et_tel);
+//        emailEt = findViewById(R.id.et_email);
+
         cardIv = findViewById(R.id.iv_card_image);
+
+        mGraphicOverlay = findViewById(R.id.graphic_overlay);
 
         // Camera Permission
         cameraPermission = new String [] {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
-
         //Storage Permission
         storagePermission = new String [] {Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
-
     }
+
+
 
     // actionbar menu
     @Override
@@ -193,6 +202,7 @@ public class ScanCardActivity extends AppCompatActivity {
     // handle permission result
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+
         switch (requestCode){
             case CAMERA_REQUEST_CODE:
                 if(grantResults.length >0){
@@ -253,12 +263,30 @@ public class ScanCardActivity extends AppCompatActivity {
                 BitmapDrawable bitmapDrawable = (BitmapDrawable) cardIv.getDrawable();
                 Bitmap bitmap = bitmapDrawable.getBitmap();
 
+                // Resize bitmap
+                mSelectedImage = bitmap;
+
+                int targetWidth = mImageMaxWidth;
+                int maxHeight = mImageMaxHeight;
+
+                float scaleFactor =
+                        Math.max(
+                                (float) mSelectedImage.getWidth() / (float) targetWidth,
+                                (float) mSelectedImage.getHeight() / (float) maxHeight);
+
+                Bitmap resizedBitmap =
+                        Bitmap.createScaledBitmap(
+                                mSelectedImage,
+                                (int) (mSelectedImage.getWidth() / scaleFactor),
+                                (int) (mSelectedImage.getHeight() / scaleFactor),
+                                true);
+
+                cardIv.setImageBitmap(resizedBitmap);
+
 
                 // set mSelectedImage then run Google ML kit Text Recognizer
-                mSelectedImage = bitmap;
+                mSelectedImage = resizedBitmap;
                 runTextRecognition();
-
-
 //                // Text Recognizer
 //                TextRecognizer recognizer = new TextRecognizer.Builder(getApplicationContext()).build();
 //
@@ -278,10 +306,6 @@ public class ScanCardActivity extends AppCompatActivity {
 //                    addressEt.setText(sb.toString());
 //                }
 
-
-
-
-
             }else if(resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE){
                 // if there is any error
                 Exception error = result.getError();
@@ -290,20 +314,20 @@ public class ScanCardActivity extends AppCompatActivity {
         }
     }
 
+
+
+
     private void runTextRecognition() {
         FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(mSelectedImage);
 
         FirebaseVisionTextRecognizer recognizer = FirebaseVision.getInstance()
                 .getOnDeviceTextRecognizer();
 
-//        mTextButton.setEnabled(false);
-
         recognizer.processImage(image)
                 .addOnSuccessListener(
                         new OnSuccessListener<FirebaseVisionText>() {
                             @Override
                             public void onSuccess(FirebaseVisionText texts) {
-//                                mTextButton.setEnabled(true);
                                 processTextRecognitionResult(texts);
                             }
                         })
@@ -311,8 +335,6 @@ public class ScanCardActivity extends AppCompatActivity {
                         new OnFailureListener() {
                             @Override
                             public void onFailure(@NonNull Exception e) {
-                                // Task failed with an exception
-//                                mTextButton.setEnabled(true);
                                 e.printStackTrace();
                             }
                         });
@@ -324,11 +346,12 @@ public class ScanCardActivity extends AppCompatActivity {
 
         if (blocks.size() == 0) {
             showToast("No text found");
+            Log.d("TAG", "No text found");
             return;
         }
 
         // clear text previously display on the screen
-//        mGraphicOverlay.clear();
+        mGraphicOverlay.clear();
 
         //blocks
         for (int i = 0; i < blocks.size(); i++) {
@@ -339,21 +362,15 @@ public class ScanCardActivity extends AppCompatActivity {
                 //element
                 for (int k = 0; k < elements.size(); k++) {
 
-//                    GraphicOverlay.Graphic textGraphic = new TextGraphic(mGraphicOverlay, elements.get(k));
-//                    mGraphicOverlay.add(textGraphic);
-                    addressEt.setText(elements.get(k).toString());
+                    GraphicOverlay.Graphic textGraphic = new TextGraphic(mGraphicOverlay, elements.get(k));
+                    mGraphicOverlay.add(textGraphic);
                 }
             }
         }
-
-
-
-
     }
 
     // Cloud Text Recognition
     private void runCloudTextRecognition() {
-//        mCloudButton.setEnabled(false);
         FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(mSelectedImage);
         FirebaseVisionDocumentTextRecognizer recognizer = FirebaseVision.getInstance()
                 .getCloudDocumentTextRecognizer();
@@ -362,7 +379,6 @@ public class ScanCardActivity extends AppCompatActivity {
                         new OnSuccessListener<FirebaseVisionDocumentText>() {
                             @Override
                             public void onSuccess(FirebaseVisionDocumentText texts) {
-//                                mCloudButton.setEnabled(true);
                                 processCloudTextRecognitionResult(texts);
                             }
                         })
@@ -371,7 +387,6 @@ public class ScanCardActivity extends AppCompatActivity {
                             @Override
                             public void onFailure(@NonNull Exception e) {
                                 // Task failed with an exception
-//                                mCloudButton.setEnabled(true);
                                 e.printStackTrace();
                             }
                         });
@@ -383,25 +398,23 @@ public class ScanCardActivity extends AppCompatActivity {
             showToast("No text found");
             return;
         }
-
-//        mGraphicOverlay.clear();
-
+        mGraphicOverlay.clear();
         List<FirebaseVisionDocumentText.Block> blocks = text.getBlocks();
         for (int i = 0; i < blocks.size(); i++) {
             List<FirebaseVisionDocumentText.Paragraph> paragraphs = blocks.get(i).getParagraphs();
             for (int j = 0; j < paragraphs.size(); j++) {
                 List<FirebaseVisionDocumentText.Word> words = paragraphs.get(j).getWords();
                 for (int l = 0; l < words.size(); l++) {
-//                    CloudTextGraphic cloudDocumentTextGraphic = new CloudTextGraphic(mGraphicOverlay,
-//                            words.get(l));
-//                    mGraphicOverlay.add(cloudDocumentTextGraphic);
-
+                    CloudTextGraphic cloudDocumentTextGraphic = new CloudTextGraphic(mGraphicOverlay,
+                            words.get(l));
+                    mGraphicOverlay.add(cloudDocumentTextGraphic);
                 }
             }
         }
     }
 
 
+    // Helper Functions
     private void showToast(String message){
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
