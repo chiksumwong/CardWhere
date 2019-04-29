@@ -17,6 +17,33 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        // Init Toolbar
+        initToolbar();
+        // Init Bottom Navigation View => set two fragment card and account
+        initBottomNavigationView();
+
+    }
+
+    private void initToolbar(){
+        // Action Bar
+        Toolbar toolbar = findViewById(R.id.main_toolbar);
+        setSupportActionBar(toolbar);
+    }
+
+    private void initBottomNavigationView(){
+        // Bottom Navigation
+        BottomNavigationView navView = findViewById(R.id.nav_view);
+        // Bottom Navigation
+        navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+        // initial fragment is Card List Fragment
+        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new CardFragment()).commit();
+    }
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -30,7 +57,6 @@ public class MainActivity extends AppCompatActivity {
                     selectedFragment = new CardFragment();
                     break;
                 case R.id.nav_account:
-//                    selectedFragment = new AccountFragment();
                     selectedFragment = new ProfileFragment();
                     break;
             }
@@ -41,27 +67,7 @@ public class MainActivity extends AppCompatActivity {
     };
 
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-        // Action Bar
-        Toolbar toolbar = findViewById(R.id.main_toolbar);
-        setSupportActionBar(toolbar);
-
-
-        // Bottom Navigation
-        BottomNavigationView navView = findViewById(R.id.nav_view);
-
-        // initial fragment is Card List Fragment
-        getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new CardFragment()).commit();
-
-        // Bottom Navigation
-        navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
-    }
-
-    // actionbar menu
+    // handle toolbar search
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.card_toolbar_menu, menu);
@@ -90,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onCreateOptionsMenu(menu);
     }
 
-    // handle actionbar item clicks
+    // handle toolbar item (add card) clicks
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 
