@@ -38,6 +38,7 @@ import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ScanCardActivity extends AppCompatActivity {
@@ -68,16 +69,20 @@ public class ScanCardActivity extends AppCompatActivity {
     // Max height (portrait mode)
     private Integer mImageMaxHeight = 480;
 
+
+    ArrayList<String> outputLine = new ArrayList<>();
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_scan_card);
 
-//        nameEt = findViewById(R.id.et_name);
-//        companyEt = findViewById(R.id.et_company);
-//        addressEt = findViewById(R.id.et_address);
-//        telEt = findViewById(R.id.et_tel);
-//        emailEt = findViewById(R.id.et_email);
+        companyEt = findViewById(R.id.et_company);
+        nameEt = findViewById(R.id.et_name);
+        telEt = findViewById(R.id.et_tel);
+        emailEt = findViewById(R.id.et_email);
+        addressEt = findViewById(R.id.et_address);
 
         cardIv = findViewById(R.id.iv_card_image);
 
@@ -287,6 +292,9 @@ public class ScanCardActivity extends AppCompatActivity {
                 // set mSelectedImage then run Google ML kit Text Recognizer
                 mSelectedImage = resizedBitmap;
                 runTextRecognition();
+
+
+
 //                // Text Recognizer
 //                TextRecognizer recognizer = new TextRecognizer.Builder(getApplicationContext()).build();
 //
@@ -353,19 +361,32 @@ public class ScanCardActivity extends AppCompatActivity {
         // clear text previously display on the screen
         mGraphicOverlay.clear();
 
+
         //blocks
         for (int i = 0; i < blocks.size(); i++) {
             List<FirebaseVisionText.Line> lines = blocks.get(i).getLines();
             // lines
             for (int j = 0; j < lines.size(); j++) {
                 List<FirebaseVisionText.Element> elements = lines.get(j).getElements();
+
+                // get each line for auto input
+                outputLine.add(lines.get(j).getText());
+
                 //element
                 for (int k = 0; k < elements.size(); k++) {
-
                     GraphicOverlay.Graphic textGraphic = new TextGraphic(mGraphicOverlay, elements.get(k));
                     mGraphicOverlay.add(textGraphic);
                 }
             }
+        }
+
+        // Set Text
+        if(outputLine.size() <= 5 && outputLine.size() > 0){
+            companyEt.setText(outputLine.get(0));
+            nameEt.setText(outputLine.get(1));
+            telEt.setText(outputLine.get(2));
+            emailEt.setText(outputLine.get(3));
+            addressEt.setText(outputLine.get(4));
         }
     }
 

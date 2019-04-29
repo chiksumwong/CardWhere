@@ -1,4 +1,4 @@
-package com.cs.cardwhere;
+package com.cs.cardwhere.Models;
 
 public class Card {
 

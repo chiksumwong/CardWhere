@@ -5,8 +5,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
+    <SearchView
+        android:id="@+id/search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:iconifiedByDefault="false"
+        android:queryHint="Enter Company Name"/>
+
     <com.google.android.material.tabs.TabLayout
         android:id="@+id/tabs"
+        android:layout_below="@id/search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

@@ -14,7 +14,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
-
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
@@ -27,9 +26,6 @@ public class MainActivity extends AppCompatActivity {
                 case R.id.nav_card:
                     selectedFragment = new CardFragment();
                     break;
-//                case R.id.nav_camera:
-//                    selectedFragment = new CameraFragment();
-//                    break;
                 case R.id.nav_account:
                     selectedFragment = new AccountFragment();
                     break;
@@ -64,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.card_toolbar_menu, menu);
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -79,8 +76,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
                 return true;
 
-            case R.id.search_card:
-                return true;
+//            case R.id.search_card:
+//                return true;
 
             default: return super.onOptionsItemSelected(item);
         }

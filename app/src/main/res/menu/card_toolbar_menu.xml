@@ -2,11 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item
-        android:id="@+id/search_card"
-        android:title="Search Card"
-        app:showAsAction="ifRoom"
-        android:icon="@drawable/ic_action_search"/>
+    <!--<item-->
+        <!--android:id="@+id/search_card"-->
+        <!--android:title="Search Card"-->
+        <!--app:showAsAction="ifRoom"-->
+        <!--android:icon="@drawable/ic_action_search"/>-->
 
     <item
         android:id="@+id/add_card"

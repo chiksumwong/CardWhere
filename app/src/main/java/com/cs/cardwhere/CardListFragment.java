@@ -13,6 +13,8 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.cs.cardwhere.Models.Card;
+
 import java.util.ArrayList;
 
 public class CardListFragment extends Fragment {
