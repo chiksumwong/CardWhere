@@ -51,6 +51,9 @@ public class AccountFragment extends Fragment {
     GoogleSignInClient mGoogleSignInClient;
     private static final int RC_SIGN_IN = 101;
 
+    // Is Login
+    boolean isLogin = false;
+
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -117,9 +120,20 @@ public class AccountFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
+
+//        String personName = acct.getDisplayName();
+////        String personGivenName = acct.getGivenName();
+////        String personFamilyName = acct.getFamilyName();
+////        String personEmail = acct.getEmail();
+////        String personId = acct.getId();
+////        Uri personPhoto = acct.getPhotoUrl();
+//        getIdToken(boolean forceRefresh) => for backend
+
+
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null) {
+            isLogin = true;
             accountTxt.setText("Welcome ! " + currentUser.getDisplayName());
             signInButton.setVisibility(View.GONE);
             signOutButton.setVisibility(View.VISIBLE);

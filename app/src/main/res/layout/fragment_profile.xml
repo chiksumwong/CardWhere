@@ -14,7 +14,7 @@
         <ImageView
             android:id="@+id/header_cover_image"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="wrap_content"
             android:background="?attr/selectableItemBackgroundBorderless"
             android:scaleType="centerCrop"
 
@@ -34,7 +34,7 @@
             android:elevation="5dp"
             android:padding="20dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/man" />
+            android:src="@drawable/user" />
 
         <RelativeLayout
             android:id="@+id/profile_layout"
