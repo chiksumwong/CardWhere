@@ -2,13 +2,15 @@ package com.cs.cardwhere;
 
 import android.content.Intent;
 import android.os.Bundle;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-import androidx.fragment.app.Fragment;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.annotation.NonNull;
-import androidx.appcompat.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.Fragment;
+
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -78,8 +80,6 @@ public class MainActivity extends AppCompatActivity {
                 return true;
 
             case R.id.search_card:
-                intent = new Intent(this, MapsActivity.class);
-                startActivity(intent);
                 return true;
 
             default: return super.onOptionsItemSelected(item);
