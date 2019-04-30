@@ -22,7 +22,6 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.0.0'
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
-
     implementation 'androidx.exifinterface:exifinterface:1.0.0'
     implementation 'androidx.media:media:1.0.0'
     implementation 'androidx.legacy:legacy-support-v4:1.0.0'
@@ -37,22 +36,18 @@ dependencies {
     implementation 'com.google.firebase:firebase-auth:16.2.1'
     // Google Sign-in
     implementation 'com.google.android.gms:play-services-auth:16.0.1'
-
     // Google ML Kit - Text Recognition
     implementation 'com.google.firebase:firebase-ml-vision:19.0.3'
-
     // Google Maps
     implementation 'com.google.android.gms:play-services-maps:16.1.0'
-
     // Mobile Vision: part of ML kit for image to text
     implementation 'com.google.android.gms:play-services-vision:17.0.2'
-
-    // image crop library
+    // Image Crop
     implementation 'com.theartofdev.edmodo:android-image-cropper:2.7.+'
-
+    // Image Download
+    implementation 'com.squareup.picasso:picasso:2.71828'
     // Camera kit
     implementation 'com.wonderkiln:camerakit:0.13.4'
-
     //A circular ImageView for Android
     implementation 'de.hdodenhof:circleimageview:3.0.0'
 
