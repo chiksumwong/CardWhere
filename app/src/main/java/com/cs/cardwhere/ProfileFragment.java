@@ -3,11 +3,8 @@ package com.cs.cardwhere;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +12,10 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
@@ -29,22 +30,25 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.squareup.picasso.Picasso;
 
-import java.util.concurrent.Executor;
+import de.hdodenhof.circleimageview.CircleImageView;
 
-import static android.support.constraint.Constraints.TAG;
+import static android.content.ContentValues.TAG;
 
-public class AccountFragment extends Fragment {
+public class ProfileFragment extends Fragment {
 
     protected Activity mActivity;
 
     private View view;
 
-    // Weights
-    private TextView accountTxt;
     private SignInButton signInButton;
     private Button signOutButton;
     private Button revokeButton;
+
+    private CircleImageView userIcon;
+    private TextView userName;
+    private TextView userEmail;
 
     // Firebase Auth
     private FirebaseAuth mAuth;
@@ -79,11 +83,15 @@ public class AccountFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        view =  inflater.inflate(R.layout.fragment_account, container, false);
-        accountTxt = view.findViewById(R.id.txt_account);
+        view =  inflater.inflate(R.layout.fragment_profile, container, false);
+
         signInButton = view.findViewById(R.id.btn_google_sign_in);
         signOutButton = view.findViewById(R.id.btn_google_sign_out);
         revokeButton = view.findViewById(R.id.btn_google_revoke);
+
+        userIcon = view.findViewById(R.id.user_icon);
+        userName = view.findViewById(R.id.user_name);
+        userEmail = view.findViewById(R.id.user_email);
 
 
         // Sign In
@@ -119,17 +127,24 @@ public class AccountFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
+
+//        String personName = acct.getDisplayName();
+////        String personGivenName = acct.getGivenName();
+////        String personFamilyName = acct.getFamilyName();
+////        String personEmail = acct.getEmail();
+////        String personId = acct.getId();
+////        Uri personPhoto = acct.getPhotoUrl();
+//        getIdToken(boolean forceRefresh) => for backend
+
+
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null) {
-            accountTxt.setText("Welcome ! " + currentUser.getDisplayName());
-            signInButton.setVisibility(View.GONE);
-            signOutButton.setVisibility(View.VISIBLE);
-            revokeButton.setVisibility(View.VISIBLE);
+
+            updateViewWhenLogin(currentUser.getDisplayName(), currentUser.getEmail(), currentUser.getPhotoUrl());
+
         }else{
-            signInButton.setVisibility(View.VISIBLE);
-            signOutButton.setVisibility(View.GONE);
-            revokeButton.setVisibility(View.GONE);
+            updateViewWhenLogout();
         }
     }
 
@@ -164,17 +179,15 @@ public class AccountFragment extends Fragment {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Toast.makeText(mActivity, "Hi :" + user.getEmail(), Toast.LENGTH_LONG).show();
-                            accountTxt.setText("Welcome ! " + user.getDisplayName());
-                            signInButton.setVisibility(View.GONE);
-                            signOutButton.setVisibility(View.VISIBLE);
-                            revokeButton.setVisibility(View.VISIBLE);
+
+                            Toast.makeText(mActivity, "Hi :" + user.getUid(), Toast.LENGTH_LONG).show();
+
+                           updateViewWhenLogin(user.getDisplayName(), user.getEmail(), user.getPhotoUrl());
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                         }
 
-                        // ...
                     }
                 });
     }
@@ -194,14 +207,10 @@ public class AccountFragment extends Fragment {
                 new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        accountTxt.setText("Please Sign In !");
+                        // Show Sign Out Button
+                        updateViewWhenLogout();
                     }
                 });
-
-        // Show Sign Out Button
-        signInButton.setVisibility(View.VISIBLE);
-        signOutButton.setVisibility(View.GONE);
-        revokeButton.setVisibility(View.GONE);
 
     }
 
@@ -214,16 +223,39 @@ public class AccountFragment extends Fragment {
                 .addOnCompleteListener((mActivity), new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        accountTxt.setText("Please Sign In !");
-                        Toast.makeText(mActivity, "Bye Bye !", Toast.LENGTH_LONG).show();
+                        updateViewWhenLogout();
                     }
                 });
+    }
 
-        // Show Sign In Button
+    private void updateViewWhenLogin(String name, String email, Uri icon){
+
+        userName.setText(name);
+        userEmail.setText(email);
+
+        Picasso.get()
+                .load(icon)
+                .resize(200, 200)
+                .centerCrop()
+                .into(userIcon);
+
+        signInButton.setVisibility(View.GONE);
+        signOutButton.setVisibility(View.VISIBLE);
+        revokeButton.setVisibility(View.VISIBLE);
+
+        userName.setVisibility(View.VISIBLE);
+        userEmail.setVisibility(View.VISIBLE);
+    }
+
+    private void updateViewWhenLogout(){
         signInButton.setVisibility(View.VISIBLE);
         signOutButton.setVisibility(View.GONE);
         revokeButton.setVisibility(View.GONE);
-    }
 
+        userName.setVisibility(View.GONE);
+        userEmail.setVisibility(View.GONE);
+        int id = getResources().getIdentifier("com.cs.cardwhere:drawable/user", null, null);
+        userIcon.setImageResource(id);
+    }
 
 }
