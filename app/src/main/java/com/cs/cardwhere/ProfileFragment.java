@@ -40,8 +40,6 @@ public class ProfileFragment extends Fragment {
 
     private Activity mActivity;
 
-    private View view;
-
     private SignInButton signInButton;
     private Button signOutButton;
     private Button revokeButton;
@@ -56,9 +54,6 @@ public class ProfileFragment extends Fragment {
     // Google Sign In
     private GoogleSignInClient mGoogleSignInClient;
     private static final int RC_SIGN_IN = 101;
-
-    // Local Storage
-    private SharedPreferences sharedPreferences;
 
     @Override
     public void onAttach(Context context) {
@@ -86,7 +81,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        view =  inflater.inflate(R.layout.fragment_profile, container, false);
+        View view =  inflater.inflate(R.layout.fragment_profile, container, false);
 
         signInButton = view.findViewById(R.id.btn_google_sign_in);
         signOutButton = view.findViewById(R.id.btn_google_sign_out);
@@ -260,6 +255,8 @@ public class ProfileFragment extends Fragment {
     }
 
     private void updateUserInfoToLoacalStoreage(String userId, String userName){
+        // Local Storage
+        SharedPreferences sharedPreferences;
         sharedPreferences = mActivity.getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("USER_ID", userId);

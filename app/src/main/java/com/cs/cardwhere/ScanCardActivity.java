@@ -3,8 +3,10 @@ package com.cs.cardwhere;
 import android.Manifest;
 import android.app.AlertDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -24,6 +26,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.cs.cardwhere.Controller.AppController;
 import com.cs.cardwhere.GraphicUtils.CloudTextGraphic;
 import com.cs.cardwhere.GraphicUtils.GraphicOverlay;
 import com.cs.cardwhere.GraphicUtils.TextGraphic;
@@ -38,8 +47,14 @@ import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ScanCardActivity extends AppCompatActivity {
 
@@ -69,9 +84,15 @@ public class ScanCardActivity extends AppCompatActivity {
     // Max height (portrait mode)
     private Integer mImageMaxHeight = 480;
 
-
     ArrayList<String> outputLine = new ArrayList<>();
 
+    String inputCompany = "";
+    String inputName = "";
+    String inputTel = "";
+    String inputEmail = "";
+    String inputAddress = "";
+
+    private static final String TAG = "ScanCardActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,7 +115,6 @@ public class ScanCardActivity extends AppCompatActivity {
         storagePermission = new String [] {Manifest.permission.WRITE_EXTERNAL_STORAGE};
 
     }
-
 
 
     // actionbar menu
@@ -203,7 +223,6 @@ public class ScanCardActivity extends AppCompatActivity {
         return result_camera_permission && result_storage_permission;
     }
 
-
     // handle permission result
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -237,7 +256,6 @@ public class ScanCardActivity extends AppCompatActivity {
                 break;
         }
     }
-
 
     // handle image result
     @Override
@@ -293,27 +311,6 @@ public class ScanCardActivity extends AppCompatActivity {
                 mSelectedImage = resizedBitmap;
                 runTextRecognition();
 
-
-
-//                // Text Recognizer
-//                TextRecognizer recognizer = new TextRecognizer.Builder(getApplicationContext()).build();
-//
-//                if (!recognizer.isOperational()){
-//                    showToast("Recognizer Error");
-//                }else {
-//                    Frame frame = new Frame.Builder().setBitmap(bitmap).build();
-//                    SparseArray<TextBlock> items = recognizer.detect(frame);
-//                    StringBuilder sb = new StringBuilder();
-//                    // get text from sb until there is no text
-//                    for (int i =0; i<items.size(); i++){
-//                        TextBlock myItem = items.valueAt(i);
-//                        sb.append(myItem.getValue());
-//                        sb.append("\n");
-//                    }
-//                    // set text to address
-//                    addressEt.setText(sb.toString());
-//                }
-
             }else if(resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE){
                 // if there is any error
                 Exception error = result.getError();
@@ -321,8 +318,6 @@ public class ScanCardActivity extends AppCompatActivity {
             }
         }
     }
-
-
 
 
     private void runTextRecognition() {
@@ -361,7 +356,6 @@ public class ScanCardActivity extends AppCompatActivity {
         // clear text previously display on the screen
         mGraphicOverlay.clear();
 
-
         //blocks
         for (int i = 0; i < blocks.size(); i++) {
             List<FirebaseVisionText.Line> lines = blocks.get(i).getLines();
@@ -380,14 +374,91 @@ public class ScanCardActivity extends AppCompatActivity {
             }
         }
 
-        // Set Text
-        if(outputLine.size() <= 5 && outputLine.size() > 0){
-            companyEt.setText(outputLine.get(0));
-            nameEt.setText(outputLine.get(1));
-            telEt.setText(outputLine.get(2));
-            emailEt.setText(outputLine.get(3));
-            addressEt.setText(outputLine.get(4));
+        // Get Text
+        if(outputLine.size() > 0){
+            inputCompany = outputLine.get(0);
+            inputName = outputLine.get(1);
+            inputTel = outputLine.get(2);
+            inputEmail = outputLine.get(3);
+            inputAddress = outputLine.get(4);
         }
+
+        // Set Text
+        companyEt.setText(inputCompany);
+        nameEt.setText(inputName);
+        telEt.setText(inputTel);
+        emailEt.setText(inputEmail);
+        addressEt.setText(inputAddress);
+
+        // Connect to API
+        AddCard();
+    }
+
+    private String requestBody;
+
+    private void AddCard(){
+
+        JSONObject jsonBodyObj = new JSONObject();
+        try{
+            jsonBodyObj.put("user_id", getUserIdFromLocalStorage());
+            jsonBodyObj.put("company", inputCompany);
+            jsonBodyObj.put("name", inputName);
+            jsonBodyObj.put("tel", inputTel);
+            jsonBodyObj.put("email", inputEmail);
+            jsonBodyObj.put("address", inputAddress);
+        }catch (JSONException e){
+            e.printStackTrace();
+        }
+
+        requestBody = jsonBodyObj.toString();
+
+        // Tag used to cancel the request
+        String tag_json_object = "json_obj_request";
+        String url = "https://us-central1-cardwhere.cloudfunctions.net/api/api/v1/card";
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        Log.d(TAG, "add card success :" +response.toString());
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d(TAG, "add card fail :" + error.toString());
+            }
+        }) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                HashMap<String, String> headers = new HashMap<String, String>();
+                headers.put("Content-Type", "application/json");
+                return headers;
+            }
+            @Override
+            public byte[] getBody() {
+                try {
+                    return requestBody.getBytes("utf-8");
+                } catch (UnsupportedEncodingException uee) {
+                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                    return null;
+                }
+            }
+
+
+        };
+        // Adding request to request queue
+        AppController.getInstance().addToRequestQueue(jsonObjectRequest, tag_json_object);
+    }
+
+    private String getUserIdFromLocalStorage(){
+        String userId;
+        SharedPreferences sharedPreferences;
+        sharedPreferences = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+
+        userId = sharedPreferences.getString("USER_ID", "");
+
+        return userId;
     }
 
     // Cloud Text Recognition
