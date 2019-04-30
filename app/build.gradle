@@ -48,8 +48,10 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.71828'
     // Camera kit
     implementation 'com.wonderkiln:camerakit:0.13.4'
-    //A circular ImageView for Android
+    // Circular ImageView for Android
     implementation 'de.hdodenhof:circleimageview:3.0.0'
+    // Http
+    implementation 'com.android.volley:volley:1.1.1'
 
     // Testing - Mockito
     testImplementation 'org.mockito:mockito-core:2.27.0'
