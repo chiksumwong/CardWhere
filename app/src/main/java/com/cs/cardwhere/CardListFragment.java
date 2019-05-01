@@ -30,15 +30,9 @@ import java.util.Iterator;
 import static com.android.volley.VolleyLog.TAG;
 
 public class CardListFragment extends Fragment {
-
     private View view;
 
     private ArrayList<Card> cards = new ArrayList<>();
-
-    private static String[] Cards= {"Breaking Bad","Rick and Morty", "FRIENDS","Sherlock","Stranger Things"};
-    private static final int[] CardsImgs = {R.drawable.ic_account_box_black_24dp,R.drawable.ic_account_box_black_24dp,R.drawable.ic_account_box_black_24dp,R.drawable.ic_account_box_black_24dp,R.drawable.ic_account_box_black_24dp};
-
-    private String cards_data;
 
     @Nullable
     @Override
@@ -72,10 +66,7 @@ public class CardListFragment extends Fragment {
                     @Override
                     public void onResponse(JSONObject response) {
                         Log.d(TAG, "get result success"+response.toString());
-                        cards_data = response.toString();
-
-                        int i = 0;
-
+                        String cards_data = response.toString();
                         try
                         {
                             JSONObject jObject= new JSONObject(cards_data);
@@ -89,10 +80,17 @@ public class CardListFragment extends Fragment {
                                 JSONObject innerJObject = jObject.getJSONObject(key);
                                 Log.d(TAG, "innerJobject: " + innerJObject.toString());
 
-                                Card card = new Card(innerJObject.getString("company"), CardsImgs[i]);
+                                Card card = new Card();
+                                card.setFirebase_id(key);
+                                card.setCompany(innerJObject.getString("company"));
+                                card.setName(innerJObject.getString("name"));
+                                card.setTel(innerJObject.getString("tel"));
+                                card.setEmail(innerJObject.getString("email"));
+                                card.setAddress(innerJObject.getString("address"));
+                                card.setUser_id(innerJObject.getString("user_id"));
+                                card.setImage_uri(innerJObject.getString("image_url"));
                                 cards.add(card);
 
-                                i++;
                             }
                             onCallBack.onSuccess(cards);
                         } catch (JSONException e) {
@@ -130,7 +128,7 @@ public class CardListFragment extends Fragment {
         cardAdapter.setOnItemClickListener(new CardAdapter.OnItemClickListener() {
             @Override
             public void OnItemClick(View view, Card data) {
-                Toast.makeText(getActivity(),"i am " + data.getCard(),Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(),"This is " + data.getCompany(),Toast.LENGTH_SHORT).show();
             }
         });
     }

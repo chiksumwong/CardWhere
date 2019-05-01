@@ -13,23 +13,48 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:orientation="vertical">
+
 
             <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:layout_margin="20dp"
+                android:layout_width="350dp"
+                android:layout_height="200dp"
+                android:layout_margin="10dp"
                 android:layout_gravity="center"
                 android:id="@+id/imgCard"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="17sp"
-                android:layout_margin="20dp"
-                android:layout_gravity="center"
-                android:id="@+id/textCard"
-                android:text="Place_holder"/>
+                android:textSize="20dp"
+                android:layout_gravity="right"
+                android:id="@+id/textCompany"
+                android:text="company"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:layout_gravity="right"
+                android:id="@+id/textName"
+                android:text="name"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:layout_gravity="right"
+                android:id="@+id/textTel"
+                android:text="Tel"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:layout_gravity="right"
+                android:id="@+id/textAddress"
+                android:text="Address"/>
+
 
         </LinearLayout>
 

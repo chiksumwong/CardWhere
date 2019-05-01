@@ -32,6 +32,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.cloudinary.android.MediaManager;
+import com.cloudinary.android.callback.ErrorInfo;
+import com.cloudinary.android.callback.UploadCallback;
 import com.cs.cardwhere.Controller.AppController;
 import com.cs.cardwhere.GraphicUtils.CloudTextGraphic;
 import com.cs.cardwhere.GraphicUtils.GraphicOverlay;
@@ -91,6 +94,9 @@ public class ScanCardActivity extends AppCompatActivity {
     String inputTel = "";
     String inputEmail = "";
     String inputAddress = "";
+
+    Uri imageUpload;
+    String imageUrl;
 
     private static final String TAG = "ScanCardActivity";
 
@@ -278,6 +284,7 @@ public class ScanCardActivity extends AppCompatActivity {
             if (resultCode == RESULT_OK){
                 // get image uri
                 Uri resultUri = result.getUri();
+                imageUpload = resultUri;
 
                 // set image to image view
                 cardIv.setImageURI(resultUri);
@@ -398,6 +405,45 @@ public class ScanCardActivity extends AppCompatActivity {
 
     private void AddCard(){
 
+        // init CLOUDINARY for upload card image
+        MediaManager.init(this);
+
+        String requestId = MediaManager.get().upload(imageUpload)
+                .unsigned("drfll21r")
+                .option("resource_type", "image")
+                .option("folder", "CardWhere")
+                .callback(new UploadCallback() {
+                    @Override
+                    public void onStart(String requestId) {
+                        Log.d(TAG, "onStart: Image Upload");
+                    }
+
+                    @Override
+                    public void onProgress(String requestId, long bytes, long totalBytes) {
+
+                    }
+
+                    @Override
+                    public void onSuccess(String requestId, Map resultData) {
+                        imageUrl = resultData.get("url").toString();
+                        Log.d(TAG, "Image upload success: result Url :" + imageUrl);
+                        addCardRequest();
+                    }
+
+                    @Override
+                    public void onError(String requestId, ErrorInfo error) {
+                        Log.d(TAG, "onError: image upload" + error.getDescription());
+                    }
+
+                    @Override
+                    public void onReschedule(String requestId, ErrorInfo error) {
+
+                    }
+                })
+                .dispatch();
+    }
+
+    private void addCardRequest(){
         JSONObject jsonBodyObj = new JSONObject();
         try{
             jsonBodyObj.put("user_id", getUserIdFromLocalStorage());
@@ -406,6 +452,7 @@ public class ScanCardActivity extends AppCompatActivity {
             jsonBodyObj.put("tel", inputTel);
             jsonBodyObj.put("email", inputEmail);
             jsonBodyObj.put("address", inputAddress);
+            jsonBodyObj.put("image_url", imageUrl);
         }catch (JSONException e){
             e.printStackTrace();
         }
