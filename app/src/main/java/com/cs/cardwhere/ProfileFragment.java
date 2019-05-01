@@ -80,7 +80,6 @@ public class ProfileFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
         View view =  inflater.inflate(R.layout.fragment_profile, container, false);
 
         signInButton = view.findViewById(R.id.btn_google_sign_in);
@@ -170,7 +169,6 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-
         // Check if user is signed in (non-null) and update UI accordingly.
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null) {
@@ -203,7 +201,6 @@ public class ProfileFragment extends Fragment {
                         updateUserInfoToLoacalStoreage("", "");
                     }
                 });
-
     }
 
     private void revokeAccess() {
@@ -225,7 +222,6 @@ public class ProfileFragment extends Fragment {
     }
 
     private void updateViewWhenLogin(String name, String email, Uri icon){
-
         userName.setText(name);
         userEmail.setText(email);
 
@@ -262,8 +258,6 @@ public class ProfileFragment extends Fragment {
         editor.putString("USER_ID", userId);
         editor.putString("USER_NAME", userName);
         editor.commit();
-
-        //sharedPreferences.getString(NAME_KEY, "")
     }
 
 }
