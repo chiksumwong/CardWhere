@@ -3,6 +3,7 @@ package com.cs.cardwhere;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -38,9 +38,7 @@ import static android.content.ContentValues.TAG;
 
 public class ProfileFragment extends Fragment {
 
-    protected Activity mActivity;
-
-    private View view;
+    private Activity mActivity;
 
     private SignInButton signInButton;
     private Button signOutButton;
@@ -54,7 +52,7 @@ public class ProfileFragment extends Fragment {
     private FirebaseAuth mAuth;
 
     // Google Sign In
-    GoogleSignInClient mGoogleSignInClient;
+    private GoogleSignInClient mGoogleSignInClient;
     private static final int RC_SIGN_IN = 101;
 
     @Override
@@ -82,8 +80,7 @@ public class ProfileFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-
-        view =  inflater.inflate(R.layout.fragment_profile, container, false);
+        View view =  inflater.inflate(R.layout.fragment_profile, container, false);
 
         signInButton = view.findViewById(R.id.btn_google_sign_in);
         signOutButton = view.findViewById(R.id.btn_google_sign_out);
@@ -92,7 +89,6 @@ public class ProfileFragment extends Fragment {
         userIcon = view.findViewById(R.id.user_icon);
         userName = view.findViewById(R.id.user_name);
         userEmail = view.findViewById(R.id.user_email);
-
 
         // Sign In
         signInButton.setOnClickListener(new View.OnClickListener() {
@@ -122,32 +118,6 @@ public class ProfileFragment extends Fragment {
         return view;
     }
 
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-
-//        String personName = acct.getDisplayName();
-////        String personGivenName = acct.getGivenName();
-////        String personFamilyName = acct.getFamilyName();
-////        String personEmail = acct.getEmail();
-////        String personId = acct.getId();
-////        Uri personPhoto = acct.getPhotoUrl();
-//        getIdToken(boolean forceRefresh) => for backend
-
-
-        // Check if user is signed in (non-null) and update UI accordingly.
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        if(currentUser != null) {
-
-            updateViewWhenLogin(currentUser.getDisplayName(), currentUser.getEmail(), currentUser.getPhotoUrl());
-
-        }else{
-            updateViewWhenLogout();
-        }
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -158,11 +128,13 @@ public class ProfileFragment extends Fragment {
             try {
                 // Google Sign In was successful, authenticate with Firebase
                 GoogleSignInAccount account = task.getResult(ApiException.class);
+
+                // Firebase Auth
                 firebaseAuthWithGoogle(account);
+
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
                 Log.w(TAG, "Google sign in failed", e);
-                // ...
             }
         }
     }
@@ -180,16 +152,32 @@ public class ProfileFragment extends Fragment {
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
 
-                            Toast.makeText(mActivity, "Hi :" + user.getUid(), Toast.LENGTH_LONG).show();
+                            // Update Views
+                            updateViewWhenLogin(user.getDisplayName(), user.getEmail(), user.getPhotoUrl());
 
-                           updateViewWhenLogin(user.getDisplayName(), user.getEmail(), user.getPhotoUrl());
+                            // Save user info to share preferences
+                            updateUserInfoToLoacalStoreage(user.getUid(), user.getDisplayName());
+
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
                         }
-
                     }
                 });
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        // Check if user is signed in (non-null) and update UI accordingly.
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        if(currentUser != null) {
+
+            updateViewWhenLogin(currentUser.getDisplayName(), currentUser.getEmail(), currentUser.getPhotoUrl());
+
+        }else{
+            updateViewWhenLogout();
+        }
     }
 
     private void signIn() {
@@ -198,7 +186,6 @@ public class ProfileFragment extends Fragment {
     }
 
     private void signOut() {
-
         // Firebase sign out
         mAuth.signOut();
 
@@ -207,11 +194,13 @@ public class ProfileFragment extends Fragment {
                 new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
-                        // Show Sign Out Button
+                        // Update Views
                         updateViewWhenLogout();
+
+                        // Remove User Info To Local Storage
+                        updateUserInfoToLoacalStoreage("", "");
                     }
                 });
-
     }
 
     private void revokeAccess() {
@@ -223,13 +212,16 @@ public class ProfileFragment extends Fragment {
                 .addOnCompleteListener((mActivity), new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
+                        // Update Views
                         updateViewWhenLogout();
+
+                        // Remove User Info To Local Storage
+                        updateUserInfoToLoacalStoreage("", "");
                     }
                 });
     }
 
     private void updateViewWhenLogin(String name, String email, Uri icon){
-
         userName.setText(name);
         userEmail.setText(email);
 
@@ -256,6 +248,16 @@ public class ProfileFragment extends Fragment {
         userEmail.setVisibility(View.GONE);
         int id = getResources().getIdentifier("com.cs.cardwhere:drawable/user", null, null);
         userIcon.setImageResource(id);
+    }
+
+    private void updateUserInfoToLoacalStoreage(String userId, String userName){
+        // Local Storage
+        SharedPreferences sharedPreferences;
+        sharedPreferences = mActivity.getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("USER_ID", userId);
+        editor.putString("USER_NAME", userName);
+        editor.commit();
     }
 
 }

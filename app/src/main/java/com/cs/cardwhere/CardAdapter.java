@@ -10,6 +10,7 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cs.cardwhere.Models.Card;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -34,9 +35,17 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder>{
 
         Card card = CardList.get(position);
 
-        holder.textCard.setText(card.getCard());
-        holder.imgCard.setImageResource(card.getCardImage());
+        holder.textCompany.setText(card.getCompany());
+        holder.textName.setText(card.getName());
+        holder.textTel.setText(card.getTel());
+        holder.textAddress.setText(card.getAddress());
 
+        String imageUrl = card.getImage_uri().replace("http", "https");
+        Picasso.get()
+                .load(imageUrl)
+                .resize(350, 200)
+                .centerCrop()
+                .into(holder.imageCard);
     }
 
     @Override
@@ -46,15 +55,23 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder>{
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         CardView cv;
-        ImageView imgCard;
-        TextView textCard;
+
+        ImageView imageCard;
+        TextView textCompany;
+        TextView textName;
+        TextView textTel;
+        TextView textAddress;
 
         public ViewHolder(View itemView) {
             super(itemView);
             cv = itemView.findViewById(R.id.card_recycler_view);
-            imgCard = itemView.findViewById(R.id.imgCard);
-            textCard = itemView.findViewById(R.id.textCard);
 
+            imageCard = itemView.findViewById(R.id.imgCard);
+
+            textCompany = itemView.findViewById(R.id.textCompany);
+            textName = itemView.findViewById(R.id.textName);
+            textTel = itemView.findViewById(R.id.textTel);
+            textAddress = itemView.findViewById(R.id.textAddress);
 
             // set itemView onClick Listener
             itemView.setOnClickListener(new View.OnClickListener() {

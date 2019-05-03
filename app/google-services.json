@@ -15,7 +15,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "88293541098-ntuagvupmuu4si6kmlq41httjtcvovi5.apps.googleusercontent.com",
+          "client_id": "88293541098-6cj5n8o7bov3dopj4or6v9o7k43b7ik7.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "com.cs.cardwhere",
@@ -23,7 +23,7 @@
           }
         },
         {
-          "client_id": "88293541098-lbh68ere49a39g03r9jq3u0t0bdnqks2.apps.googleusercontent.com",
+          "client_id": "88293541098-urq8pavmtompomceql12ordan8gk4ecj.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -36,7 +36,36 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "88293541098-lbh68ere49a39g03r9jq3u0t0bdnqks2.apps.googleusercontent.com",
+              "client_id": "88293541098-urq8pavmtompomceql12ordan8gk4ecj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:88293541098:android:693c00b96c712e8c",
+        "android_client_info": {
+          "package_name": "com.google.firebase.codelab.mlkit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "88293541098-urq8pavmtompomceql12ordan8gk4ecj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA2zspjDliaQ9GMuCUYP4Uv7TJg3sWwFJI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "88293541098-urq8pavmtompomceql12ordan8gk4ecj.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
