@@ -34,7 +34,7 @@ import java.util.Iterator;
 
 import static com.android.volley.VolleyLog.TAG;
 
-public class MapsFragment extends Fragment {
+public class MapFragment extends Fragment {
     View view;
 
     private ArrayList<Card> cards = new ArrayList<>();
@@ -54,13 +54,11 @@ public class MapsFragment extends Fragment {
                 // Init Map
                 setMap();
             }
-
             @Override
             public void onFail(String msg) {
                 // Do Stuff
             }
         });
-
 
         return view;
     }
@@ -71,8 +69,7 @@ public class MapsFragment extends Fragment {
         sharedPreferences = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
         final String userId = sharedPreferences.getString("USER_ID", "");
 
-        // Tag used to cancel the request
-        String tag_json_object = "json_obj_req";
+        // get request
         String url = "https://us-central1-cardwhere.cloudfunctions.net/api/api/v1/cards";
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
                 url, null,
@@ -115,13 +112,7 @@ public class MapsFragment extends Fragment {
                 Log.d(TAG, "get result fail" + error.toString());
             }
         });
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(jsonObjectRequest, tag_json_object);
-    }
-
-    public interface CallBack {
-        void onSuccess(ArrayList<Card> detailsMovies);
-        void onFail(String msg);
+        AppController.getInstance().addToRequestQueue(jsonObjectRequest, "json_obj_req");
     }
 
     private void setMap(){
@@ -150,14 +141,13 @@ public class MapsFragment extends Fragment {
 
                 mMap.animateCamera(CameraUpdateFactory.newCameraPosition(googlePlex), 10000, null);
 
+                // mark all the location of card's company
                 for (int i=0; i < cards.size(); i++){
-                    // mark all the location of card's company
                     mMap.addMarker(new MarkerOptions()
                             .position(new LatLng(cards.get(i).getLatitude(),cards.get(i).getLongitude()))
                             .title(cards.get(i).getName())
                             .snippet(cards.get(i).getCompany()));
                 }
-
             }
         });
     }

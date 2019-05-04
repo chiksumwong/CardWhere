@@ -32,7 +32,6 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-
         Card card = CardList.get(position);
 
         holder.textCompany.setText(card.getCompany());
@@ -65,9 +64,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder>{
         public ViewHolder(View itemView) {
             super(itemView);
             cv = itemView.findViewById(R.id.card_recycler_view);
-
             imageCard = itemView.findViewById(R.id.imgCard);
-
             textCompany = itemView.findViewById(R.id.textCompany);
             textName = itemView.findViewById(R.id.textName);
             textTel = itemView.findViewById(R.id.textTel);
@@ -83,7 +80,6 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder>{
                 }
             });
         }
-
     }
 
     public interface OnItemClickListener {

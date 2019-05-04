@@ -64,8 +64,7 @@ public class CardListFragment extends Fragment {
         sharedPreferences = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
         final String userId = sharedPreferences.getString("USER_ID", "");
 
-        // Tag used to cancel the request
-        String tag_json_object = "json_obj_req";
+        // get request
         String url = "https://us-central1-cardwhere.cloudfunctions.net/api/api/v1/cards";
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
                 url, null,
@@ -101,7 +100,6 @@ public class CardListFragment extends Fragment {
 
                                     cards.add(card);
                                 }
-
                             }
                             onCallBack.onSuccess(cards);
                         } catch (JSONException e) {
@@ -115,8 +113,7 @@ public class CardListFragment extends Fragment {
                         Log.d(TAG, "get result fail" + error.toString());
                     }
                 });
-                // Adding request to request queue
-                AppController.getInstance().addToRequestQueue(jsonObjectRequest, tag_json_object);
+                AppController.getInstance().addToRequestQueue(jsonObjectRequest, "json_obj_req");
     }
 
     public interface CallBack {

@@ -28,7 +28,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -38,15 +37,10 @@ import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
 import com.cs.cardwhere.Controller.AppController;
-import com.cs.cardwhere.GraphicUtils.CloudTextGraphic;
-import com.cs.cardwhere.GraphicUtils.GraphicOverlay;
-import com.cs.cardwhere.GraphicUtils.TextGraphic;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.ml.vision.FirebaseVision;
 import com.google.firebase.ml.vision.common.FirebaseVisionImage;
-import com.google.firebase.ml.vision.document.FirebaseVisionDocumentText;
-import com.google.firebase.ml.vision.document.FirebaseVisionDocumentTextRecognizer;
 import com.google.firebase.ml.vision.text.FirebaseVisionText;
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
 import com.theartofdev.edmodo.cropper.CropImage;
@@ -83,12 +77,6 @@ public class ScanCardActivity extends AppCompatActivity {
     Uri image_uri;
 
     private Bitmap mSelectedImage;
-    GraphicOverlay mGraphicOverlay;
-
-    // Max width (portrait mode)
-    private Integer mImageMaxWidth = 640;
-    // Max height (portrait mode)
-    private Integer mImageMaxHeight = 480;
 
     ArrayList<String> outputLine = new ArrayList<>();
 
@@ -115,16 +103,12 @@ public class ScanCardActivity extends AppCompatActivity {
         telEt = findViewById(R.id.et_tel);
         emailEt = findViewById(R.id.et_email);
         addressEt = findViewById(R.id.et_address);
-
         cardIv = findViewById(R.id.iv_card_image);
-
-        mGraphicOverlay = findViewById(R.id.graphic_overlay);
 
         // Camera Permission
         cameraPermission = new String [] {Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE};
         //Storage Permission
         storagePermission = new String [] {Manifest.permission.WRITE_EXTERNAL_STORAGE};
-
     }
 
 
@@ -138,23 +122,19 @@ public class ScanCardActivity extends AppCompatActivity {
     // handle actionbar item clicks
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         switch (item.getItemId()){
             case R.id.done_button:
                 // Connect to API
                 AddCard();
-
+                // Go to home page
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
                 return true;
-
             case R.id.camera_button:
                 showImageImportDialog();
                 return true;
-
             default: return super.onOptionsItemSelected(item);
         }
-
     }
 
 
@@ -220,7 +200,6 @@ public class ScanCardActivity extends AppCompatActivity {
     }
 
     private boolean checkStoragePermission() {
-
         boolean result_storage_permission = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) == (PackageManager.PERMISSION_GRANTED);
 
@@ -232,7 +211,6 @@ public class ScanCardActivity extends AppCompatActivity {
     }
 
     private boolean checkCameraPermission() {
-
         boolean result_camera_permission = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
 
@@ -306,29 +284,8 @@ public class ScanCardActivity extends AppCompatActivity {
                 BitmapDrawable bitmapDrawable = (BitmapDrawable) cardIv.getDrawable();
                 Bitmap bitmap = bitmapDrawable.getBitmap();
 
-                // Resize bitmap
+                // text recognition
                 mSelectedImage = bitmap;
-
-                int targetWidth = mImageMaxWidth;
-                int maxHeight = mImageMaxHeight;
-
-                float scaleFactor =
-                        Math.max(
-                                (float) mSelectedImage.getWidth() / (float) targetWidth,
-                                (float) mSelectedImage.getHeight() / (float) maxHeight);
-
-                Bitmap resizedBitmap =
-                        Bitmap.createScaledBitmap(
-                                mSelectedImage,
-                                (int) (mSelectedImage.getWidth() / scaleFactor),
-                                (int) (mSelectedImage.getHeight() / scaleFactor),
-                                true);
-
-                cardIv.setImageBitmap(resizedBitmap);
-
-
-                // set mSelectedImage then run Google ML kit Text Recognizer
-                mSelectedImage = resizedBitmap;
                 runTextRecognition();
 
             }else if(resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE){
@@ -373,9 +330,6 @@ public class ScanCardActivity extends AppCompatActivity {
             return;
         }
 
-        // clear text previously display on the screen
-        mGraphicOverlay.clear();
-
         //blocks
         for (int i = 0; i < blocks.size(); i++) {
             List<FirebaseVisionText.Line> lines = blocks.get(i).getLines();
@@ -385,12 +339,6 @@ public class ScanCardActivity extends AppCompatActivity {
 
                 // get each line for auto input
                 outputLine.add(lines.get(j).getText());
-
-                //element
-                for (int k = 0; k < elements.size(); k++) {
-                    GraphicOverlay.Graphic textGraphic = new TextGraphic(mGraphicOverlay, elements.get(k));
-                    mGraphicOverlay.add(textGraphic);
-                }
             }
         }
 
@@ -412,12 +360,11 @@ public class ScanCardActivity extends AppCompatActivity {
     }
 
 
-
     private void AddCard(){
-
-        // init CLOUDINARY for upload card image
+        // init Cloudinary for upload card image
         MediaManager.init(this);
 
+        // upload card to Cloudinary
         MediaManager.get().upload(imageUpload)
                 .unsigned("drfll21r")
                 .option("resource_type", "image")
@@ -430,14 +377,12 @@ public class ScanCardActivity extends AppCompatActivity {
 
                     @Override
                     public void onProgress(String requestId, long bytes, long totalBytes) {
-
                     }
 
                     @Override
                     public void onSuccess(String requestId, Map resultData) {
                         imageUrl = resultData.get("url").toString();
                         Log.d(TAG, "Image upload success: result Url :" + imageUrl);
-
                         //connect Api
                         addCardRequest();
                     }
@@ -449,14 +394,12 @@ public class ScanCardActivity extends AppCompatActivity {
 
                     @Override
                     public void onReschedule(String requestId, ErrorInfo error) {
-
                     }
                 })
                 .dispatch();
     }
 
     private void addCardRequest() {
-
         // get address latitude and longitude
         double latitude = 0;
         double longitude =0;
@@ -476,6 +419,7 @@ public class ScanCardActivity extends AppCompatActivity {
         }
 
 
+        // body
         JSONObject jsonBodyObj = new JSONObject();
         try{
             jsonBodyObj.put("user_id", getUserIdFromLocalStorage());
@@ -491,11 +435,10 @@ public class ScanCardActivity extends AppCompatActivity {
             Log.d(TAG, "addCardRequest: add address go wrong");
             e.printStackTrace();
         }
-
         requestBody = jsonBodyObj.toString();
 
-        // Tag used to cancel the request
-        String tag_json_object = "json_obj_request";
+
+        // sent request
         String url = "https://us-central1-cardwhere.cloudfunctions.net/api/api/v1/card";
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
                 url, null,
@@ -511,7 +454,7 @@ public class ScanCardActivity extends AppCompatActivity {
             }
         }) {
             @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
+            public Map<String, String> getHeaders() {
                 HashMap<String, String> headers = new HashMap<String, String>();
                 headers.put("Content-Type", "application/json");
                 return headers;
@@ -525,70 +468,16 @@ public class ScanCardActivity extends AppCompatActivity {
                     return null;
                 }
             }
-
-
         };
-        // Adding request to request queue
-        AppController.getInstance().addToRequestQueue(jsonObjectRequest, tag_json_object);
+        AppController.getInstance().addToRequestQueue(jsonObjectRequest, "json_obj_request");
     }
 
     private String getUserIdFromLocalStorage(){
-        String userId;
         SharedPreferences sharedPreferences;
         sharedPreferences = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-
-        userId = sharedPreferences.getString("USER_ID", "");
-
-        return userId;
+        return sharedPreferences.getString("USER_ID", "");
     }
 
-    // Cloud Text Recognition
-    private void runCloudTextRecognition() {
-        FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(mSelectedImage);
-        FirebaseVisionDocumentTextRecognizer recognizer = FirebaseVision.getInstance()
-                .getCloudDocumentTextRecognizer();
-        recognizer.processImage(image)
-                .addOnSuccessListener(
-                        new OnSuccessListener<FirebaseVisionDocumentText>() {
-                            @Override
-                            public void onSuccess(FirebaseVisionDocumentText texts) {
-                                processCloudTextRecognitionResult(texts);
-                            }
-                        })
-                .addOnFailureListener(
-                        new OnFailureListener() {
-                            @Override
-                            public void onFailure(@NonNull Exception e) {
-                                // Task failed with an exception
-                                e.printStackTrace();
-                            }
-                        });
-    }
-
-    private void processCloudTextRecognitionResult(FirebaseVisionDocumentText text) {
-        // Task completed successfully
-        if (text == null) {
-            showToast("No text found");
-            return;
-        }
-        mGraphicOverlay.clear();
-        List<FirebaseVisionDocumentText.Block> blocks = text.getBlocks();
-        for (int i = 0; i < blocks.size(); i++) {
-            List<FirebaseVisionDocumentText.Paragraph> paragraphs = blocks.get(i).getParagraphs();
-            for (int j = 0; j < paragraphs.size(); j++) {
-                List<FirebaseVisionDocumentText.Word> words = paragraphs.get(j).getWords();
-                for (int l = 0; l < words.size(); l++) {
-                    CloudTextGraphic cloudDocumentTextGraphic = new CloudTextGraphic(mGraphicOverlay,
-                            words.get(l));
-                    mGraphicOverlay.add(cloudDocumentTextGraphic);
-                }
-            }
-        }
-    }
-
-
-    // Helper Functions
     private void showToast(String message){
         Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
