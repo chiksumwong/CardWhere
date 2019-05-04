@@ -1,5 +1,7 @@
 package com.cs.cardwhere;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -57,6 +59,11 @@ public class CardListFragment extends Fragment {
     }
 
     private void initData(final CallBack onCallBack) {
+        // get current user id
+        SharedPreferences sharedPreferences;
+        sharedPreferences = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+        final String userId = sharedPreferences.getString("USER_ID", "");
+
         // Tag used to cancel the request
         String tag_json_object = "json_obj_req";
         String url = "https://us-central1-cardwhere.cloudfunctions.net/api/api/v1/cards";
@@ -80,16 +87,20 @@ public class CardListFragment extends Fragment {
                                 JSONObject innerJObject = jObject.getJSONObject(key);
                                 Log.d(TAG, "innerJobject: " + innerJObject.toString());
 
-                                Card card = new Card();
-                                card.setFirebase_id(key);
-                                card.setCompany(innerJObject.getString("company"));
-                                card.setName(innerJObject.getString("name"));
-                                card.setTel(innerJObject.getString("tel"));
-                                card.setEmail(innerJObject.getString("email"));
-                                card.setAddress(innerJObject.getString("address"));
-                                card.setUser_id(innerJObject.getString("user_id"));
-                                card.setImage_uri(innerJObject.getString("image_url"));
-                                cards.add(card);
+                                if (userId.equals(innerJObject.getString("user_id"))){
+                                    Card card = new Card();
+
+                                    card.setFirebase_id(key);
+                                    card.setCompany(innerJObject.getString("company"));
+                                    card.setName(innerJObject.getString("name"));
+                                    card.setTel(innerJObject.getString("tel"));
+                                    card.setEmail(innerJObject.getString("email"));
+                                    card.setAddress(innerJObject.getString("address"));
+                                    card.setUser_id(innerJObject.getString("user_id"));
+                                    card.setImage_uri(innerJObject.getString("image_url"));
+
+                                    cards.add(card);
+                                }
 
                             }
                             onCallBack.onSuccess(cards);
