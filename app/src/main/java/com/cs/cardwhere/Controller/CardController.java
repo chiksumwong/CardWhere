@@ -171,7 +171,27 @@ public class CardController {
         AppController.getInstance().addToRequestQueue(jsonObjectRequest, "json_obj_request");
     }
 
-
+    public void deleteCard(String cardId){
+        String url = "https://us-central1-cardwhere.cloudfunctions.net/api/api/v1/card/" + cardId;
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.DELETE, url,null,
+                new Response.Listener<JSONObject>()
+                {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // response
+                        Log.d(TAG, "delete card success :" +response.toString());
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d(TAG, "delete card fail :" + error.toString());
+                    }
+                }
+        );
+        AppController.getInstance().addToRequestQueue(jsonObjectRequest, "json_obj_request");
+    }
 
 
 }

@@ -3,12 +3,14 @@ package com.cs.cardwhere;
 import android.content.Context;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.cs.cardwhere.Controller.CardController;
 import com.cs.cardwhere.Models.Card;
 import com.squareup.picasso.Picasso;
 
@@ -32,12 +34,20 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        Card card = CardList.get(position);
+        final Card card = CardList.get(position);
 
         holder.textCompany.setText(card.getCompany());
         holder.textName.setText(card.getName());
         holder.textTel.setText(card.getTel());
         holder.textAddress.setText(card.getAddress());
+
+        holder.btnDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CardController cardController = new CardController(context);
+                cardController.deleteCard(card.getCardId());
+            }
+        });
 
         String imageUrl = card.getImageUri().replace("http", "https");
         Picasso.get()
@@ -60,6 +70,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder>{
         TextView textName;
         TextView textTel;
         TextView textAddress;
+        Button btnDelete;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -69,6 +80,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder>{
             textName = itemView.findViewById(R.id.textName);
             textTel = itemView.findViewById(R.id.textTel);
             textAddress = itemView.findViewById(R.id.textAddress);
+            btnDelete = itemView.findViewById(R.id.btn_delete);
 
             // set itemView onClick Listener
             itemView.setOnClickListener(new View.OnClickListener() {

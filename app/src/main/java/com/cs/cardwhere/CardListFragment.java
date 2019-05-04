@@ -65,7 +65,11 @@ public class CardListFragment extends Fragment {
             public void OnItemClick(View view, Card data) {
                 Toast.makeText(getActivity(),"This is " + data.getCompany(),Toast.LENGTH_SHORT).show();
             }
+
+
         });
+
+
     }
 
 }
