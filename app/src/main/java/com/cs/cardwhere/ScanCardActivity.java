@@ -10,8 +10,6 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.location.Address;
-import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -28,15 +26,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
-import com.cs.cardwhere.Controller.AppController;
+import com.cs.cardwhere.Controller.CardController;
+import com.cs.cardwhere.Models.Card;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.ml.vision.FirebaseVision;
@@ -46,24 +40,19 @@ import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
 import com.theartofdev.edmodo.cropper.CropImage;
 import com.theartofdev.edmodo.cropper.CropImageView;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 public class ScanCardActivity extends AppCompatActivity {
+
+    private static final String TAG = "ScanCardActivity";
 
     EditText nameEt;
     EditText companyEt;
     EditText telEt;
     EditText addressEt;
     EditText emailEt;
-
     ImageView cardIv;
 
     private static final int CAMERA_REQUEST_CODE = 200;
@@ -80,18 +69,10 @@ public class ScanCardActivity extends AppCompatActivity {
 
     ArrayList<String> outputLine = new ArrayList<>();
 
-    String inputCompany = "";
-    String inputName = "";
-    String inputTel = "";
-    String inputEmail = "";
-    String inputAddress = "";
+    Card card = new Card();
 
     Uri imageUpload;
     String imageUrl;
-
-    private static final String TAG = "ScanCardActivity";
-
-    private String requestBody;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -325,7 +306,7 @@ public class ScanCardActivity extends AppCompatActivity {
         List<FirebaseVisionText.TextBlock> blocks = texts.getTextBlocks();
 
         if (blocks.size() == 0) {
-            showToast("No text found");
+            Toast.makeText(this, "No text found", Toast.LENGTH_LONG).show();
             Log.d("TAG", "No text found");
             return;
         }
@@ -335,8 +316,6 @@ public class ScanCardActivity extends AppCompatActivity {
             List<FirebaseVisionText.Line> lines = blocks.get(i).getLines();
             // lines
             for (int j = 0; j < lines.size(); j++) {
-                List<FirebaseVisionText.Element> elements = lines.get(j).getElements();
-
                 // get each line for auto input
                 outputLine.add(lines.get(j).getText());
             }
@@ -344,23 +323,25 @@ public class ScanCardActivity extends AppCompatActivity {
 
         // Get Text
         if(outputLine.size() > 0){
-            inputCompany = outputLine.get(0);
-            inputName = outputLine.get(1);
-            inputTel = outputLine.get(2);
-            inputEmail = outputLine.get(3);
-            inputAddress = outputLine.get(4);
+            card.setCompany(outputLine.get(0));
+            card.setName(outputLine.get(1));
+            card.setTel(outputLine.get(2));
+            card.setEmail(outputLine.get(3));
+            card.setAddress(outputLine.get(4));
         }
 
         // Set Text
-        companyEt.setText(inputCompany);
-        nameEt.setText(inputName);
-        telEt.setText(inputTel);
-        emailEt.setText(inputEmail);
-        addressEt.setText(inputAddress);
+        companyEt.setText(card.getCompany());
+        nameEt.setText(card.getName());
+        telEt.setText(card.getTel());
+        emailEt.setText(card.getEmail());
+        addressEt.setText(card.getAddress());
     }
 
 
     private void AddCard(){
+        final Context context = this;
+
         // init Cloudinary for upload card image
         MediaManager.init(this);
 
@@ -383,8 +364,11 @@ public class ScanCardActivity extends AppCompatActivity {
                     public void onSuccess(String requestId, Map resultData) {
                         imageUrl = resultData.get("url").toString();
                         Log.d(TAG, "Image upload success: result Url :" + imageUrl);
+                        card.setImageUri(imageUrl);
+                        card.setUserId(getUserIdFromLocalStorage());
                         //connect Api
-                        addCardRequest();
+                        CardController cardController = new CardController(context);
+                        cardController.addCard(card);
                     }
 
                     @Override
@@ -399,87 +383,10 @@ public class ScanCardActivity extends AppCompatActivity {
                 .dispatch();
     }
 
-    private void addCardRequest() {
-        // get address latitude and longitude
-        double latitude = 0;
-        double longitude =0;
-        Geocoder geoCoder = new Geocoder(this, Locale.getDefault());
-        try {
-            List<Address> geoResults = geoCoder.getFromLocationName(inputAddress, 1);
-            while (geoResults.size()==0) {
-                geoResults = geoCoder.getFromLocationName(inputAddress, 1);
-            }
-            if (geoResults.size()>0) {
-                Address address = geoResults.get(0);
-                latitude = address.getLatitude();
-                longitude = address.getLongitude();
-            }
-        } catch (Exception e) {
-            System.out.print(e.getMessage());
-        }
-
-
-        // body
-        JSONObject jsonBodyObj = new JSONObject();
-        try{
-            jsonBodyObj.put("user_id", getUserIdFromLocalStorage());
-            jsonBodyObj.put("company", inputCompany);
-            jsonBodyObj.put("name", inputName);
-            jsonBodyObj.put("tel", inputTel);
-            jsonBodyObj.put("email", inputEmail);
-            jsonBodyObj.put("address", inputAddress);
-            jsonBodyObj.put("image_url", imageUrl);
-            jsonBodyObj.put("latitude", latitude);
-            jsonBodyObj.put("longitude", longitude);
-        }catch (JSONException e){
-            Log.d(TAG, "addCardRequest: add address go wrong");
-            e.printStackTrace();
-        }
-        requestBody = jsonBodyObj.toString();
-
-
-        // sent request
-        String url = "https://us-central1-cardwhere.cloudfunctions.net/api/api/v1/card";
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-                url, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.d(TAG, "add card success :" +response.toString());
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d(TAG, "add card fail :" + error.toString());
-            }
-        }) {
-            @Override
-            public Map<String, String> getHeaders() {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                headers.put("Content-Type", "application/json");
-                return headers;
-            }
-            @Override
-            public byte[] getBody() {
-                try {
-                    return requestBody.getBytes("utf-8");
-                } catch (UnsupportedEncodingException uee) {
-                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
-                    return null;
-                }
-            }
-        };
-        AppController.getInstance().addToRequestQueue(jsonObjectRequest, "json_obj_request");
-    }
-
     private String getUserIdFromLocalStorage(){
         SharedPreferences sharedPreferences;
         sharedPreferences = getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
         return sharedPreferences.getString("USER_ID", "");
-    }
-
-    private void showToast(String message){
-        Toast.makeText(this, message, Toast.LENGTH_LONG).show();
     }
 
 }

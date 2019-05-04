@@ -2,14 +2,14 @@ package com.cs.cardwhere.Models;
 
 public class Card {
 
-    private String firebase_id;
-    private String user_id;
+    private String cardId;
+    private String userId;
     private String company;
     private String name;
     private String tel;
     private String email;
     private String address;
-    private String image_uri;
+    private String imageUri;
     private double latitude;
     private double longitude;
 
@@ -17,20 +17,20 @@ public class Card {
 
     }
 
-    public String getFirebase_id() {
-        return firebase_id;
+    public String getCardId() {
+        return cardId;
     }
 
-    public void setFirebase_id(String firebase_id) {
-        this.firebase_id = firebase_id;
+    public void setCardId(String cardId) {
+        this.cardId = cardId;
     }
 
-    public String getUser_id() {
-        return user_id;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUser_id(String user_id) {
-        this.user_id = user_id;
+    public void setUserId(String user_id) {
+        this.userId = user_id;
     }
 
     public String getCompany() {
@@ -73,12 +73,12 @@ public class Card {
         this.address = address;
     }
 
-    public String getImage_uri() {
-        return image_uri;
+    public String getImageUri() {
+        return imageUri;
     }
 
-    public void setImage_uri(String image_uri) {
-        this.image_uri = image_uri;
+    public void setImageUri(String imageUri) {
+        this.imageUri = imageUri;
     }
 
     public double getLatitude() {

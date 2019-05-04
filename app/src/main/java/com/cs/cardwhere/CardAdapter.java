@@ -39,7 +39,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder>{
         holder.textTel.setText(card.getTel());
         holder.textAddress.setText(card.getAddress());
 
-        String imageUrl = card.getImage_uri().replace("http", "https");
+        String imageUrl = card.getImageUri().replace("http", "https");
         Picasso.get()
                 .load(imageUrl)
                 .resize(350, 200)
