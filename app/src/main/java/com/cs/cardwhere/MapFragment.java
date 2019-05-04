@@ -17,6 +17,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.cs.cardwhere.Controller.AppController;
+import com.cs.cardwhere.Controller.CallBack;
 import com.cs.cardwhere.Models.Card;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -48,7 +49,7 @@ public class MapFragment extends Fragment {
         view = inflater.inflate(R.layout.fragment_maps, container, false);
 
         // Init Data in Recycler View
-        initData(new CardListFragment.CallBack() {
+        initData(new CallBack() {
             @Override
             public void onSuccess(ArrayList<Card> cards) {
                 // Init Map
@@ -63,7 +64,7 @@ public class MapFragment extends Fragment {
         return view;
     }
 
-    private void initData(final CardListFragment.CallBack onCallBack) {
+    private void initData(final CallBack onCallBack) {
         // get current user id
         SharedPreferences sharedPreferences;
         sharedPreferences = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
@@ -139,7 +140,7 @@ public class MapFragment extends Fragment {
                         .tilt(45)
                         .build();
 
-                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(googlePlex), 10000, null);
+                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(googlePlex), 2000, null);
 
                 // mark all the location of card's company
                 for (int i=0; i < cards.size(); i++){

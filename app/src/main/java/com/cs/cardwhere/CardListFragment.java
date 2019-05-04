@@ -21,6 +21,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.cs.cardwhere.Controller.AppController;
+import com.cs.cardwhere.Controller.CallBack;
 import com.cs.cardwhere.Models.Card;
 
 import org.json.JSONException;
@@ -51,7 +52,7 @@ public class CardListFragment extends Fragment {
 
             @Override
             public void onFail(String msg) {
-                // Do Stuff
+                Log.d(TAG, "get result fail" + msg);
             }
         });
 
@@ -114,11 +115,6 @@ public class CardListFragment extends Fragment {
                     }
                 });
                 AppController.getInstance().addToRequestQueue(jsonObjectRequest, "json_obj_req");
-    }
-
-    public interface CallBack {
-        void onSuccess(ArrayList<Card> detailsMovies);
-        void onFail(String msg);
     }
 
     private void initRecyclerView() {

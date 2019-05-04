@@ -31,7 +31,7 @@ public class CardFragmentPagerAdapter extends FragmentPagerAdapter {
     @Override
     public CharSequence getPageTitle(int position) {
 
-        String Cards = context.getString(R.string.title_camera);
+        String Cards = context.getString(R.string.title_card);
         String Map = context.getString(R.string.title_activity_maps);
 
         switch (position) {
