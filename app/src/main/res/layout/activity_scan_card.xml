@@ -30,7 +30,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Company:"
+                        android:text="@string/company"
                         android:textSize="30sp"
                         android:textColor="@color/colorPrimary"/>
 
@@ -38,7 +38,7 @@
                         android:id="@+id/et_company"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Company" />
+                        android:hint="@string/company" />
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -58,7 +58,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Name:"
+                        android:text="@string/name"
                         android:textSize="30sp"
                         android:textColor="@color/colorPrimary"/>
 
@@ -66,7 +66,7 @@
                         android:id="@+id/et_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Name" />
+                        android:hint="@string/name" />
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -86,7 +86,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Tel:"
+                        android:text="@string/tel"
                         android:textSize="30sp"
                         android:textColor="@color/colorPrimary"/>
 
@@ -94,7 +94,7 @@
                         android:id="@+id/et_tel"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Tel" />
+                        android:hint="@string/tel" />
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -114,7 +114,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Email:"
+                        android:text="@string/email"
                         android:textSize="30sp"
                         android:textColor="@color/colorPrimary"/>
 
@@ -122,7 +122,7 @@
                         android:id="@+id/et_email"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Email" />
+                        android:hint="@string/email" />
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -142,7 +142,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Address:"
+                        android:text="@string/address"
                         android:textSize="30sp"
                         android:textColor="@color/colorPrimary"/>
 
@@ -150,7 +150,7 @@
                         android:id="@+id/et_address"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="Address" />
+                        android:hint="@string/address" />
 
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
@@ -169,7 +169,7 @@
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="Card:"
+                        android:text="@string/card"
                         android:textSize="30sp"
                         android:textColor="@color/colorPrimary"/>
 

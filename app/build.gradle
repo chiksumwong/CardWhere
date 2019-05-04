@@ -40,6 +40,8 @@ dependencies {
     implementation 'com.google.firebase:firebase-ml-vision:19.0.3'
     // Google Maps
     implementation 'com.google.android.gms:play-services-maps:16.1.0'
+    // Google Location
+    implementation 'com.google.android.gms:play-services-location:16.0.0'
     // Mobile Vision: part of ML kit for image to text
     implementation 'com.google.android.gms:play-services-vision:17.0.2'
     // Image Crop

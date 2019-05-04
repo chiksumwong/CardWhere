@@ -10,30 +10,11 @@ public class Card {
     private String email;
     private String address;
     private String image_uri;
+    private double latitude;
+    private double longitude;
 
     public Card(){
 
-    }
-
-    public Card(String firebase_id, String user_id, String company, String name, String tel, String email, String address, String image_uri) {
-        this.firebase_id = firebase_id;
-        this.user_id = user_id;
-        this.company = company;
-        this.name = name;
-        this.tel = tel;
-        this.email = email;
-        this.address = address;
-        this.image_uri = image_uri;
-    }
-
-    public Card(String firebase_id, String user_id, String company, String name, String tel, String email, String address) {
-        this.firebase_id = firebase_id;
-        this.user_id = user_id;
-        this.company = company;
-        this.name = name;
-        this.tel = tel;
-        this.email = email;
-        this.address = address;
     }
 
     public String getFirebase_id() {
@@ -98,5 +79,21 @@ public class Card {
 
     public void setImage_uri(String image_uri) {
         this.image_uri = image_uri;
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
     }
 }

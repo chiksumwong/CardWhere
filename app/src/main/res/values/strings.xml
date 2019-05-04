@@ -1,7 +1,23 @@
 <resources>
     <string name="app_name">CardWhere</string>
-    <string name="title_card">Card</string>
+    <string name="title_card">Cards</string>
     <string name="title_camera">Camera</string>
     <string name="title_account">Account</string>
     <string name="title_activity_maps">Map</string>
+
+    <string name="account_revoke">Account Revoke</string>
+    <string name="sign_out">Sign Out</string>
+
+    <string name="company">Company</string>
+    <string name="name">Name</string>
+    <string name="tel">Tel</string>
+    <string name="email">Email</string>
+    <string name="address">Address</string>
+    <string name="card">Card</string>
+
+    <string name="scan_camera">Camera</string>
+    <string name="scan_gallery">Gallery</string>
+    <string name="scan_message">Get Card From?</string>
+
+
 </resources>

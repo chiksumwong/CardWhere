@@ -5,4 +5,18 @@
     <string name="title_camera">相機</string>
     <string name="title_account">用戶</string>
     <string name="title_activity_maps">地圖</string>
+
+    <string name="account_revoke">帳戶撤銷</string>
+    <string name="sign_out">退出</string>
+
+    <string name="company">公司名稱</string>
+    <string name="name">聯絡人</string>
+    <string name="tel">電話</string>
+    <string name="email">電郵</string>
+    <string name="address">地址</string>
+    <string name="card">名片</string>
+
+    <string name="scan_camera">相機</string>
+    <string name="scan_gallery">圖庫</string>
+    <string name="scan_message">加入卡片</string>
 </resources>

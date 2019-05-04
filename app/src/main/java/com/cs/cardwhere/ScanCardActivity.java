@@ -10,6 +10,8 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -57,6 +59,7 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class ScanCardActivity extends AppCompatActivity {
@@ -100,6 +103,8 @@ public class ScanCardActivity extends AppCompatActivity {
 
     private static final String TAG = "ScanCardActivity";
 
+    private String requestBody;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -136,6 +141,9 @@ public class ScanCardActivity extends AppCompatActivity {
 
         switch (item.getItemId()){
             case R.id.done_button:
+                // Connect to API
+                AddCard();
+
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
                 return true;
@@ -151,12 +159,17 @@ public class ScanCardActivity extends AppCompatActivity {
 
 
     private void showImageImportDialog(){
-        String [] options = {"Camera", "Gallery"};
+        String Camera = this.getString(R.string.scan_camera);
+        String Gallery = this.getString(R.string.scan_gallery);
+        String messageTitle = this.getString(R.string.scan_message);
+
+
+        String [] options = {Camera, Gallery};
 
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 
         // set dialog's title
-        dialog.setTitle("Get Card From?");
+        dialog.setTitle(messageTitle);
         dialog.setItems(options, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -396,19 +409,16 @@ public class ScanCardActivity extends AppCompatActivity {
         telEt.setText(inputTel);
         emailEt.setText(inputEmail);
         addressEt.setText(inputAddress);
-
-        // Connect to API
-        AddCard();
     }
 
-    private String requestBody;
+
 
     private void AddCard(){
 
         // init CLOUDINARY for upload card image
         MediaManager.init(this);
 
-        String requestId = MediaManager.get().upload(imageUpload)
+        MediaManager.get().upload(imageUpload)
                 .unsigned("drfll21r")
                 .option("resource_type", "image")
                 .option("folder", "CardWhere")
@@ -427,6 +437,8 @@ public class ScanCardActivity extends AppCompatActivity {
                     public void onSuccess(String requestId, Map resultData) {
                         imageUrl = resultData.get("url").toString();
                         Log.d(TAG, "Image upload success: result Url :" + imageUrl);
+
+                        //connect Api
                         addCardRequest();
                     }
 
@@ -443,7 +455,27 @@ public class ScanCardActivity extends AppCompatActivity {
                 .dispatch();
     }
 
-    private void addCardRequest(){
+    private void addCardRequest() {
+
+        // get address latitude and longitude
+        double latitude = 0;
+        double longitude =0;
+        Geocoder geoCoder = new Geocoder(this, Locale.getDefault());
+        try {
+            List<Address> geoResults = geoCoder.getFromLocationName(inputAddress, 1);
+            while (geoResults.size()==0) {
+                geoResults = geoCoder.getFromLocationName(inputAddress, 1);
+            }
+            if (geoResults.size()>0) {
+                Address address = geoResults.get(0);
+                latitude = address.getLatitude();
+                longitude = address.getLongitude();
+            }
+        } catch (Exception e) {
+            System.out.print(e.getMessage());
+        }
+
+
         JSONObject jsonBodyObj = new JSONObject();
         try{
             jsonBodyObj.put("user_id", getUserIdFromLocalStorage());
@@ -453,7 +485,10 @@ public class ScanCardActivity extends AppCompatActivity {
             jsonBodyObj.put("email", inputEmail);
             jsonBodyObj.put("address", inputAddress);
             jsonBodyObj.put("image_url", imageUrl);
+            jsonBodyObj.put("latitude", latitude);
+            jsonBodyObj.put("longitude", longitude);
         }catch (JSONException e){
+            Log.d(TAG, "addCardRequest: add address go wrong");
             e.printStackTrace();
         }
 
