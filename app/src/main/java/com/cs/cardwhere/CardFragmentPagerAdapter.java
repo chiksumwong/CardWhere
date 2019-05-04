@@ -6,10 +6,10 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 import java.util.List;
 
-public class CardPagerFragmentAdapter extends FragmentPagerAdapter {
+public class CardFragmentPagerAdapter extends FragmentPagerAdapter {
     private List<Fragment> fragmentList;
 
-    public CardPagerFragmentAdapter(FragmentManager fm, List<Fragment> fragmentList) {
+    public CardFragmentPagerAdapter(FragmentManager fm, List<Fragment> fragmentList) {
         super(fm);
         this.fragmentList = fragmentList;
     }
@@ -35,4 +35,5 @@ public class CardPagerFragmentAdapter extends FragmentPagerAdapter {
                 return null;
         }
     }
+
 }

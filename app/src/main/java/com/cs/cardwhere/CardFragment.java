@@ -30,15 +30,9 @@ public class CardFragment extends Fragment {
         mViewPager = view.findViewById(R.id.pager);
         mTabLayout = view.findViewById(R.id.tabs);
 
-        return view;
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-
         setViewPager();
         mTabLayout.setupWithViewPager(mViewPager);
+        return view;
     }
 
     private void setViewPager(){
@@ -46,15 +40,14 @@ public class CardFragment extends Fragment {
         CardListFragment cardListFragment = new CardListFragment();
         CardsMapsFragment cardsMapsFragment = new CardsMapsFragment();
 
+
         List<Fragment> fragmentList = new ArrayList<Fragment>();
+
         fragmentList.add(cardListFragment);
         fragmentList.add(cardsMapsFragment);
 
-        CardPagerFragmentAdapter myFragmentAdapter = new CardPagerFragmentAdapter(getActivity().getSupportFragmentManager(), fragmentList);
+        CardFragmentPagerAdapter myFragmentAdapter = new CardFragmentPagerAdapter(getChildFragmentManager(), fragmentList);
         mViewPager.setAdapter(myFragmentAdapter);
     }
-
-
-
 
 }
