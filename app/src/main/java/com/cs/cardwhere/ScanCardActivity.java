@@ -103,6 +103,8 @@ public class ScanCardActivity extends AppCompatActivity {
 
     private static final String TAG = "ScanCardActivity";
 
+    private String requestBody;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -139,6 +141,9 @@ public class ScanCardActivity extends AppCompatActivity {
 
         switch (item.getItemId()){
             case R.id.done_button:
+                // Connect to API
+                AddCard();
+
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
                 return true;
@@ -154,12 +159,17 @@ public class ScanCardActivity extends AppCompatActivity {
 
 
     private void showImageImportDialog(){
-        String [] options = {"Camera", "Gallery"};
+        String Camera = this.getString(R.string.scan_camera);
+        String Gallery = this.getString(R.string.scan_gallery);
+        String messageTitle = this.getString(R.string.scan_message);
+
+
+        String [] options = {Camera, Gallery};
 
         AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 
         // set dialog's title
-        dialog.setTitle("Get Card From?");
+        dialog.setTitle(messageTitle);
         dialog.setItems(options, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -399,19 +409,16 @@ public class ScanCardActivity extends AppCompatActivity {
         telEt.setText(inputTel);
         emailEt.setText(inputEmail);
         addressEt.setText(inputAddress);
-
-        // Connect to API
-        AddCard();
     }
 
-    private String requestBody;
+
 
     private void AddCard(){
 
         // init CLOUDINARY for upload card image
         MediaManager.init(this);
 
-        String requestId = MediaManager.get().upload(imageUpload)
+        MediaManager.get().upload(imageUpload)
                 .unsigned("drfll21r")
                 .option("resource_type", "image")
                 .option("folder", "CardWhere")
@@ -430,6 +437,8 @@ public class ScanCardActivity extends AppCompatActivity {
                     public void onSuccess(String requestId, Map resultData) {
                         imageUrl = resultData.get("url").toString();
                         Log.d(TAG, "Image upload success: result Url :" + imageUrl);
+
+                        //connect Api
                         addCardRequest();
                     }
 

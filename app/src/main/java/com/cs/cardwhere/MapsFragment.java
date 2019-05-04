@@ -143,7 +143,7 @@ public class MapsFragment extends Fragment {
 
                 CameraPosition googlePlex = CameraPosition.builder()
                         .target(new LatLng(mLatitude,mLongitude))
-                        .zoom(10)
+                        .zoom(12)
                         .bearing(0)
                         .tilt(45)
                         .build();
