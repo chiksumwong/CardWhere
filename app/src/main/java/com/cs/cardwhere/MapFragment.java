@@ -32,8 +32,8 @@ public class MapFragment extends Fragment {
 
     private ArrayList<Card> cards = new ArrayList<>();
 
-    double mLatitude;
-    double mLongitude;
+    private double mLatitude;
+    private double mLongitude;
 
     @Nullable
     @Override
@@ -63,39 +63,46 @@ public class MapFragment extends Fragment {
     }
 
     private void setMap(){
-        // get current location
-        SharedPreferences sharedPreferences;
-        sharedPreferences = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+        try {
+            // get current location
+            SharedPreferences sharedPreferences;
+            sharedPreferences = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+            mLatitude = Double.parseDouble(sharedPreferences.getString("LOCATION_LATITUDE", "0"));
+            mLongitude = Double.parseDouble(sharedPreferences.getString("LOCATION_LONGITUDE", "0"));
 
-        mLatitude = Double.parseDouble(sharedPreferences.getString("LOCATION_LATITUDE", "0"));
-        mLongitude = Double.parseDouble(sharedPreferences.getString("LOCATION_LONGITUDE", "0"));
 
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.maps_fragment);
 
-        mapFragment.getMapAsync(new OnMapReadyCallback() {
-            @Override
-            public void onMapReady(GoogleMap mMap) {
-                mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
+            SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.maps_fragment);
 
-                mMap.clear(); //clear old markers
+            assert mapFragment != null;
+            mapFragment.getMapAsync(new OnMapReadyCallback() {
+                @Override
+                public void onMapReady(GoogleMap mMap) {
+                    mMap.setMapType(GoogleMap.MAP_TYPE_NORMAL);
 
-                CameraPosition googlePlex = CameraPosition.builder()
-                        .target(new LatLng(mLatitude,mLongitude))
-                        .zoom(12)
-                        .bearing(0)
-                        .tilt(45)
-                        .build();
+                    mMap.clear(); //clear old markers
 
-                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(googlePlex), 2000, null);
+                    CameraPosition googlePlex = CameraPosition.builder()
+                            .target(new LatLng(mLatitude,mLongitude))
+                            .zoom(12)
+                            .bearing(0)
+                            .tilt(45)
+                            .build();
 
-                // mark all the location of card's company
-                for (int i=0; i < cards.size(); i++){
-                    mMap.addMarker(new MarkerOptions()
-                            .position(new LatLng(cards.get(i).getLatitude(),cards.get(i).getLongitude()))
-                            .title(cards.get(i).getName())
-                            .snippet(cards.get(i).getCompany()));
+                    mMap.animateCamera(CameraUpdateFactory.newCameraPosition(googlePlex), 2000, null);
+
+                    // mark all the location of card's company
+                    for (int i=0; i < cards.size(); i++){
+                        mMap.addMarker(new MarkerOptions()
+                                .position(new LatLng(cards.get(i).getLatitude(),cards.get(i).getLongitude()))
+                                .title(cards.get(i).getName())
+                                .snippet(cards.get(i).getCompany()));
+                    }
                 }
-            }
-        });
+            });
+
+        }catch (Exception e){
+            Log.d(TAG, "setMap: Exception" + e.getMessage());
+        }
     }
 }

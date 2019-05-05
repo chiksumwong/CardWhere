@@ -46,7 +46,7 @@ public class CardFragment extends Fragment {
         fragmentList.add(cardListFragment);
         fragmentList.add(cardMapFragment);
 
-        CardFragmentPagerAdapter myFragmentAdapter = new CardFragmentPagerAdapter(getChildFragmentManager(), fragmentList, getContext());
+        CardFragmentPagerAdapter myFragmentAdapter = new CardFragmentPagerAdapter(getChildFragmentManager(), fragmentList, getActivity());
         mViewPager.setAdapter(myFragmentAdapter);
     }
 

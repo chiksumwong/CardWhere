@@ -28,11 +28,14 @@ public class CardListFragment extends Fragment {
     private View view;
 
     private ArrayList<Card> cards = new ArrayList<>();
+    private Context context = getActivity();
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_card_list, container, false);
+
+        context = getActivity();
 
         // get current user id
         SharedPreferences sharedPreferences;
@@ -53,6 +56,7 @@ public class CardListFragment extends Fragment {
                 Log.d(TAG, "get result fail" + msg);
             }
         });
+
         return view;
     }
 
@@ -64,8 +68,8 @@ public class CardListFragment extends Fragment {
         cardRecyclerView.setAdapter(cardAdapter);
 
         // recycler view setting
-        cardRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
-        cardRecyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),DividerItemDecoration.VERTICAL));
+        cardRecyclerView.setLayoutManager(new LinearLayoutManager(context));
+        cardRecyclerView.addItemDecoration(new DividerItemDecoration(context,DividerItemDecoration.VERTICAL));
 
         // OnClick Listener
         cardAdapter.setOnItemClickListener(new CardAdapter.OnItemClickListener() {
