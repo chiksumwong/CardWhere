@@ -18,8 +18,6 @@
     <string name="scan_camera">Camera</string>
     <string name="scan_gallery">Gallery</string>
     <string name="scan_message">Get Card From?</string>
-    
+
     <string name="delete">Delete</string>
-
-
 </resources>

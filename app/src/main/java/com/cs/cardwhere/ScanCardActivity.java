@@ -10,6 +10,8 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.location.Address;
+import android.location.Geocoder;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -42,6 +44,7 @@ import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class ScanCardActivity extends AppCompatActivity {
@@ -342,6 +345,22 @@ public class ScanCardActivity extends AppCompatActivity {
     private void AddCard(){
         final Context context = this;
 
+        // get address latitude and longitude
+        Geocoder geoCoder = new Geocoder(context, Locale.getDefault());
+        try {
+            List<Address> geoResults = geoCoder.getFromLocationName(card.getAddress(), 1);
+            while (geoResults.size()==0) {
+                geoResults = geoCoder.getFromLocationName(card.getAddress(), 1);
+            }
+            if (geoResults.size()>0) {
+                Address address = geoResults.get(0);
+                card.setLatitude(address.getLatitude());
+                card.setLongitude(address.getLongitude());
+            }
+        } catch (Exception e) {
+            System.out.print(e.getMessage());
+        }
+
         // init Cloudinary for upload card image
         MediaManager.init(this);
 
@@ -367,7 +386,7 @@ public class ScanCardActivity extends AppCompatActivity {
                         card.setImageUri(imageUrl);
                         card.setUserId(getUserIdFromLocalStorage());
                         //connect Api
-                        CardController cardController = new CardController(context);
+                        CardController cardController = new CardController();
                         cardController.addCard(card);
                     }
 

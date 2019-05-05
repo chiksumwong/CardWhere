@@ -1,9 +1,5 @@
 package com.cs.cardwhere.Controller;
 
-import android.content.Context;
-import android.content.SharedPreferences;
-import android.location.Address;
-import android.location.Geocoder;
 import android.util.Log;
 
 import com.android.volley.Request;
@@ -20,29 +16,19 @@ import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import static com.android.volley.VolleyLog.TAG;
 
 public class CardController {
 
-    Context context;
+    public CardController(){
 
-    public CardController(Context context){
-        this.context = context;
     }
 
-
-    public void getCards(final CallBack onCallBack) {
+    public void getCards(final String userId, final CallBack onCallBack) {
         String url = "https://us-central1-cardwhere.cloudfunctions.net/api/api/v1/cards";
         final ArrayList<Card> cards = new ArrayList<>();
-
-        // get current user id
-        SharedPreferences sharedPreferences;
-        sharedPreferences = context.getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
-        final String userId = sharedPreferences.getString("USER_ID", "");
 
         // get request
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
@@ -99,26 +85,6 @@ public class CardController {
         String url = "https://us-central1-cardwhere.cloudfunctions.net/api/api/v1/card";
         final String requestBody;
 
-        double latitude = 0;
-        double longitude =0;
-
-        // get address latitude and longitude
-        Geocoder geoCoder = new Geocoder(context, Locale.getDefault());
-        try {
-            List<Address> geoResults = geoCoder.getFromLocationName(card.getAddress(), 1);
-            while (geoResults.size()==0) {
-                geoResults = geoCoder.getFromLocationName(card.getAddress(), 1);
-            }
-            if (geoResults.size()>0) {
-                Address address = geoResults.get(0);
-                latitude = address.getLatitude();
-                longitude = address.getLongitude();
-            }
-        } catch (Exception e) {
-            System.out.print(e.getMessage());
-        }
-
-
         // body
         JSONObject jsonBodyObj = new JSONObject();
         try{
@@ -129,8 +95,8 @@ public class CardController {
             jsonBodyObj.put("email", card.getEmail());
             jsonBodyObj.put("address", card.getAddress());
             jsonBodyObj.put("image_url", card.getImageUri());
-            jsonBodyObj.put("latitude", latitude);
-            jsonBodyObj.put("longitude", longitude);
+            jsonBodyObj.put("latitude", card.getLatitude());
+            jsonBodyObj.put("longitude", card.getLongitude());
         }catch (JSONException e){
             Log.d(TAG, "addCardRequest: add address go wrong");
             e.printStackTrace();

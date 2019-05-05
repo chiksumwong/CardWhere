@@ -17,19 +17,15 @@ public class CardMapFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_cards_maps, container, false);
-        return view;
-    }
-
-    @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
 
         // Create Fragment
         MapFragment mapFragment = new MapFragment();
 
-        FragmentManager fm = getActivity().getSupportFragmentManager();
+        FragmentManager fm = getChildFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        ft.add(R.id.cards_maps_frame_container, mapFragment);
+        ft.add(R.id.cards_map_frame_container, mapFragment);
         ft.commit();
+
+        return view;
     }
 }

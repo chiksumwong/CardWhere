@@ -44,7 +44,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder>{
         holder.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                CardController cardController = new CardController(context);
+                CardController cardController = new CardController();
                 cardController.deleteCard(card.getCardId());
             }
         });

@@ -1,5 +1,7 @@
 package com.cs.cardwhere;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,9 +33,15 @@ public class CardListFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_card_list, container, false);
-        CardController cardController = new CardController(getActivity());
+
+        // get current user id
+        SharedPreferences sharedPreferences;
+        sharedPreferences = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
+        final String userId = sharedPreferences.getString("USER_ID", "");
+
+        CardController cardController = new CardController();
         // Init Data in Recycler View
-        cardController.getCards(new CallBack() {
+        cardController.getCards(userId, new CallBack() {
             @Override
             public void onSuccess(ArrayList<Card> CardsList) {
                 cards = CardsList;
@@ -68,8 +76,6 @@ public class CardListFragment extends Fragment {
 
 
         });
-
-
     }
 
 }
