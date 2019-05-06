@@ -7,7 +7,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.cs.cardwhere.Models.Card;
+import com.cs.cardwhere.Bean.CardBean;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -28,7 +28,7 @@ public class CardController {
 
     public void getCards(final String userId, final CallBack onCallBack) {
         String url = "https://us-central1-cardwhere.cloudfunctions.net/api/api/v1/cards";
-        final ArrayList<Card> cards = new ArrayList<>();
+        final ArrayList<CardBean> cards = new ArrayList<>();
 
         // get request
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,
@@ -52,7 +52,7 @@ public class CardController {
                                 Log.d(TAG, "innerJobject: " + innerJObject.toString());
 
                                 if (userId.equals(innerJObject.getString("user_id"))) {
-                                    Card card = new Card();
+                                    CardBean card = new CardBean();
                                     card.setCardId(key);
                                     card.setCompany(innerJObject.getString("company"));
                                     card.setName(innerJObject.getString("name"));
@@ -81,7 +81,7 @@ public class CardController {
         AppController.getInstance().addToRequestQueue(jsonObjectRequest, "json_obj_req");
     }
 
-    public void addCard(Card card) {
+    public void addCard(CardBean card) {
         String url = "https://us-central1-cardwhere.cloudfunctions.net/api/api/v1/card";
         final String requestBody;
 

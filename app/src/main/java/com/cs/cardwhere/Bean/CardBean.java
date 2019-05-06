@@ -1,6 +1,6 @@
-package com.cs.cardwhere.Models;
+package com.cs.cardwhere.Bean;
 
-public class Card {
+public class CardBean {
 
     private String cardId;
     private String userId;
@@ -13,7 +13,7 @@ public class Card {
     private double latitude;
     private double longitude;
 
-    public Card(){
+    public CardBean(){
 
     }
 

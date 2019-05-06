@@ -32,7 +32,7 @@ import com.cloudinary.android.MediaManager;
 import com.cloudinary.android.callback.ErrorInfo;
 import com.cloudinary.android.callback.UploadCallback;
 import com.cs.cardwhere.Controller.CardController;
-import com.cs.cardwhere.Models.Card;
+import com.cs.cardwhere.Bean.CardBean;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.ml.vision.FirebaseVision;
@@ -72,7 +72,7 @@ public class ScanCardActivity extends AppCompatActivity {
 
     ArrayList<String> outputLine = new ArrayList<>();
 
-    Card card = new Card();
+    CardBean card = new CardBean();
 
     Uri imageUpload;
     String imageUrl;

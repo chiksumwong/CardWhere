@@ -12,9 +12,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.cs.cardwhere.Bean.CardBean;
 import com.cs.cardwhere.Controller.CallBack;
 import com.cs.cardwhere.Controller.CardController;
-import com.cs.cardwhere.Models.Card;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -30,7 +30,7 @@ import static com.android.volley.VolleyLog.TAG;
 public class MapFragment extends Fragment {
     View view;
 
-    private ArrayList<Card> cards = new ArrayList<>();
+    private ArrayList<CardBean> cards = new ArrayList<>();
 
     private double mLatitude;
     private double mLongitude;
@@ -49,8 +49,8 @@ public class MapFragment extends Fragment {
         // Init Data in Recycler View
         cardController.getCards(userId, new CallBack() {
             @Override
-            public void onSuccess(ArrayList<Card> CardsList) {
-                cards = CardsList;
+            public void onSuccess(ArrayList<CardBean> cardsList) {
+                cards = cardsList;
                 // Init Map
                 setMap();
             }
@@ -92,9 +92,9 @@ public class MapFragment extends Fragment {
                     mMap.animateCamera(CameraUpdateFactory.newCameraPosition(googlePlex), 2000, null);
 
                     // mark all the location of card's company
-                    for (int i=0; i < cards.size(); i++){
+                    for (int i = 0; i < cards.size(); i++){
                         mMap.addMarker(new MarkerOptions()
-                                .position(new LatLng(cards.get(i).getLatitude(),cards.get(i).getLongitude()))
+                                .position(new LatLng(cards.get(i).getLatitude(), cards.get(i).getLongitude()))
                                 .title(cards.get(i).getName())
                                 .snippet(cards.get(i).getCompany()));
                     }

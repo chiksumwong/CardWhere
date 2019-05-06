@@ -1,10 +1,10 @@
 package com.cs.cardwhere.Controller;
 
-import com.cs.cardwhere.Models.Card;
+import com.cs.cardwhere.Bean.CardBean;
 
 import java.util.ArrayList;
 
 public interface CallBack {
-    void onSuccess(ArrayList<Card> cards);
+    void onSuccess(ArrayList<CardBean> cards);
     void onFail(String msg);
 }

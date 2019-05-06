@@ -16,9 +16,9 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.cs.cardwhere.Bean.CardBean;
 import com.cs.cardwhere.Controller.CallBack;
 import com.cs.cardwhere.Controller.CardController;
-import com.cs.cardwhere.Models.Card;
 
 import java.util.ArrayList;
 
@@ -27,7 +27,7 @@ import static com.android.volley.VolleyLog.TAG;
 public class CardListFragment extends Fragment {
     private View view;
 
-    private ArrayList<Card> cards = new ArrayList<>();
+    private ArrayList<CardBean> cards = new ArrayList<>();
     private Context context = getActivity();
 
     @Nullable
@@ -46,8 +46,8 @@ public class CardListFragment extends Fragment {
         // Init Data in Recycler View
         cardController.getCards(userId, new CallBack() {
             @Override
-            public void onSuccess(ArrayList<Card> CardsList) {
-                cards = CardsList;
+            public void onSuccess(ArrayList<CardBean> cardsList) {
+                cards = cardsList;
                 // Init Recycler View
                 initRecyclerView();
             }
@@ -74,7 +74,7 @@ public class CardListFragment extends Fragment {
         // OnClick Listener
         cardAdapter.setOnItemClickListener(new CardAdapter.OnItemClickListener() {
             @Override
-            public void OnItemClick(View view, Card data) {
+            public void OnItemClick(View view, CardBean data) {
                 Toast.makeText(getActivity(),"This is " + data.getCompany(),Toast.LENGTH_SHORT).show();
             }
 

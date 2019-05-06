@@ -11,19 +11,19 @@ import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.cs.cardwhere.Controller.CardController;
-import com.cs.cardwhere.Models.Card;
+import com.cs.cardwhere.Bean.CardBean;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder>{
 
-    private List<Card> CardList;
+    private List<CardBean> cardList;
     private Context context;
 
-    CardAdapter(Context context, List<Card> CardList) {
+    CardAdapter(Context context, List<CardBean> cardList) {
         this.context = context;
-        this.CardList = CardList;
+        this.cardList = cardList;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(ViewHolder holder, final int position) {
-        final Card card = CardList.get(position);
+        final CardBean card = cardList.get(position);
 
         holder.textCompany.setText(card.getCompany());
         holder.textName.setText(card.getName());
@@ -59,7 +59,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder>{
 
     @Override
     public int getItemCount() {
-        return CardList.size();
+        return cardList.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -87,7 +87,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder>{
                 @Override
                 public void onClick(View v) {
                     if(onItemClickListener!=null){
-                        onItemClickListener.OnItemClick(v, CardList.get(getLayoutPosition()));
+                        onItemClickListener.OnItemClick(v, cardList.get(getLayoutPosition()));
                     }
                 }
             });
@@ -95,7 +95,7 @@ public class CardAdapter extends RecyclerView.Adapter<CardAdapter.ViewHolder>{
     }
 
     public interface OnItemClickListener {
-        void OnItemClick(View view, Card data);
+        void OnItemClick(View view, CardBean data);
     }
 
     private OnItemClickListener onItemClickListener;
