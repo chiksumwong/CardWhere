@@ -361,45 +361,53 @@ public class ScanCardActivity extends AppCompatActivity {
             System.out.print(e.getMessage());
         }
 
-        // init Cloudinary for upload card image
-        MediaManager.init(this);
+        if(imageUpload != null){
+            // init Cloudinary for upload card image
+            MediaManager.init(this);
 
-        // upload card to Cloudinary
-        MediaManager.get().upload(imageUpload)
-                .unsigned("drfll21r")
-                .option("resource_type", "image")
-                .option("folder", "CardWhere")
-                .callback(new UploadCallback() {
-                    @Override
-                    public void onStart(String requestId) {
-                        Log.d(TAG, "onStart: Image Upload");
-                    }
+            // upload card to Cloudinary
+            MediaManager.get().upload(imageUpload)
+                    .unsigned("drfll21r")
+                    .option("resource_type", "image")
+                    .option("folder", "CardWhere")
+                    .callback(new UploadCallback() {
+                        @Override
+                        public void onStart(String requestId) {
+                            Log.d(TAG, "onStart: Image Upload");
+                        }
 
-                    @Override
-                    public void onProgress(String requestId, long bytes, long totalBytes) {
-                    }
+                        @Override
+                        public void onProgress(String requestId, long bytes, long totalBytes) {
+                        }
 
-                    @Override
-                    public void onSuccess(String requestId, Map resultData) {
-                        imageUrl = resultData.get("url").toString();
-                        Log.d(TAG, "Image upload success: result Url :" + imageUrl);
-                        card.setImageUri(imageUrl);
-                        card.setUserId(getUserIdFromLocalStorage());
-                        //connect Api
-                        CardController cardController = new CardController();
-                        cardController.addCard(card);
-                    }
+                        @Override
+                        public void onSuccess(String requestId, Map resultData) {
+                            imageUrl = resultData.get("url").toString();
+                            Log.d(TAG, "Image upload success: result Url :" + imageUrl);
+                            card.setImageUri(imageUrl);
+                            card.setUserId(getUserIdFromLocalStorage());
+                            //connect Api
+                            CardController cardController = new CardController(context);
+                            cardController.addCard(card);
+                        }
 
-                    @Override
-                    public void onError(String requestId, ErrorInfo error) {
-                        Log.d(TAG, "onError: image upload" + error.getDescription());
-                    }
+                        @Override
+                        public void onError(String requestId, ErrorInfo error) {
+                            Log.d(TAG, "onError: image upload" + error.getDescription());
+                        }
 
-                    @Override
-                    public void onReschedule(String requestId, ErrorInfo error) {
-                    }
-                })
-                .dispatch();
+                        @Override
+                        public void onReschedule(String requestId, ErrorInfo error) {
+                        }
+                    })
+                    .dispatch();
+        }else {
+            //connect Api
+            CardController cardController = new CardController(context);
+            cardController.addCard(card);
+        }
+
+
     }
 
     private String getUserIdFromLocalStorage(){

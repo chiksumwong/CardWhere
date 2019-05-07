@@ -42,7 +42,7 @@ public class CardListFragment extends Fragment {
         sharedPreferences = getActivity().getSharedPreferences("UserInfo", Context.MODE_PRIVATE);
         final String userId = sharedPreferences.getString("USER_ID", "");
 
-        CardController cardController = new CardController();
+        CardController cardController = new CardController(getActivity());
         // Init Data in Recycler View
         cardController.getCards(userId, new CallBack() {
             @Override

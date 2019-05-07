@@ -1,12 +1,15 @@
 package com.cs.cardwhere.Controller;
 
+import android.content.Context;
 import android.util.Log;
 
 import com.android.volley.Request;
+import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.cs.cardwhere.Bean.CardBean;
 
 import org.json.JSONException;
@@ -22,8 +25,10 @@ import static com.android.volley.VolleyLog.TAG;
 
 public class CardController {
 
-    public CardController(){
+    private RequestQueue mQueue;
 
+    public CardController(Context context){
+        mQueue = Volley.newRequestQueue(context);
     }
 
     public void getCards(final String userId, final CallBack onCallBack) {
@@ -78,7 +83,7 @@ public class CardController {
                 Log.d(TAG, "get result fail" + error.toString());
             }
         });
-        AppController.getInstance().addToRequestQueue(jsonObjectRequest, "json_obj_req");
+        mQueue.add(jsonObjectRequest);
     }
 
     public void addCard(CardBean card) {
@@ -120,7 +125,7 @@ public class CardController {
         }) {
             @Override
             public Map<String, String> getHeaders() {
-                HashMap<String, String> headers = new HashMap<String, String>();
+                HashMap<String, String> headers = new HashMap<>();
                 headers.put("Content-Type", "application/json");
                 return headers;
             }
@@ -134,7 +139,7 @@ public class CardController {
                 }
             }
         };
-        AppController.getInstance().addToRequestQueue(jsonObjectRequest, "json_obj_request");
+        mQueue.add(jsonObjectRequest);
     }
 
     public void deleteCard(String cardId){
@@ -156,7 +161,7 @@ public class CardController {
                     }
                 }
         );
-        AppController.getInstance().addToRequestQueue(jsonObjectRequest, "json_obj_request");
+        mQueue.add(jsonObjectRequest);
     }
 
 

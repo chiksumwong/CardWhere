@@ -39,7 +39,7 @@ public class MapFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_maps, container, false);
-        CardController cardController = new CardController();
+        CardController cardController = new CardController(getContext());
 
         // get current user id
         SharedPreferences sharedPreferences;
