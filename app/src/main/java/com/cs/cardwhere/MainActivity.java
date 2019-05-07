@@ -107,7 +107,10 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 intent = new Intent(this, ScanCardActivity.class);
                 startActivity(intent);
                 return true;
-
+            case R.id.refresh:
+                // initial fragment is Card List Fragment
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new CardFragment()).commit();
+                return true;
             default: return super.onOptionsItemSelected(item);
         }
 

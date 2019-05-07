@@ -49,5 +49,4 @@ public class CardFragment extends Fragment {
         CardFragmentPagerAdapter myFragmentAdapter = new CardFragmentPagerAdapter(getChildFragmentManager(), fragmentList, getActivity());
         mViewPager.setAdapter(myFragmentAdapter);
     }
-
 }
