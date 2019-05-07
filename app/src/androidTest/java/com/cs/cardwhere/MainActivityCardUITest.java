@@ -32,7 +32,7 @@ import static org.hamcrest.Matchers.is;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class MainActivityCardTest {
+public class MainActivityCardUITest {
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
@@ -50,7 +50,7 @@ public class MainActivityCardTest {
                                 childAtPosition(
                                         withId(R.id.main_toolbar),
                                         1),
-                                0),
+                                1),
                         isDisplayed()));
         actionMenuItemView.perform(click());
 

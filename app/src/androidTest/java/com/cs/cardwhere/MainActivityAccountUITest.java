@@ -31,7 +31,7 @@ import static org.hamcrest.Matchers.is;
 
 @LargeTest
 @RunWith(AndroidJUnit4.class)
-public class MainActivityAccountTest {
+public class MainActivityAccountUITest {
 
     @Rule
     public ActivityTestRule<MainActivity> mActivityTestRule = new ActivityTestRule<>(MainActivity.class);
@@ -62,25 +62,6 @@ public class MainActivityAccountTest {
                                                 0)),
                                 0)));
         lh.perform(scrollTo(), click());
-
-        ViewInteraction appCompatButton = onView(
-                allOf(withId(R.id.btn_google_revoke), withText("Account Revoke"),
-                        childAtPosition(
-                                childAtPosition(
-                                        withId(R.id.layout),
-                                        3),
-                                1)));
-        appCompatButton.perform(scrollTo(), click());
-
-        ViewInteraction lh2 = onView(
-                allOf(withText("Sign in"),
-                        childAtPosition(
-                                allOf(withId(R.id.btn_google_sign_in),
-                                        childAtPosition(
-                                                withClassName(is("android.widget.LinearLayout")),
-                                                0)),
-                                0)));
-        lh2.perform(scrollTo(), click());
 
         ViewInteraction appCompatButton2 = onView(
                 allOf(withId(R.id.btn_google_sign_out), withText("Sign Out"),

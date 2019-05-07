@@ -86,7 +86,7 @@ public class CardController {
         mQueue.add(jsonObjectRequest);
     }
 
-    public void addCard(CardBean card) {
+    public boolean addCard(CardBean card) {
         String url = "https://us-central1-cardwhere.cloudfunctions.net/api/api/v1/card";
         final String requestBody;
 
@@ -108,60 +108,73 @@ public class CardController {
         }
         requestBody = jsonBodyObj.toString();
 
-
-        // sent request
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
-                url, null,
-                new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        Log.d(TAG, "add card success :" +response.toString());
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d(TAG, "add card fail :" + error.toString());
-            }
-        }) {
-            @Override
-            public Map<String, String> getHeaders() {
-                HashMap<String, String> headers = new HashMap<>();
-                headers.put("Content-Type", "application/json");
-                return headers;
-            }
-            @Override
-            public byte[] getBody() {
-                try {
-                    return requestBody.getBytes("utf-8");
-                } catch (UnsupportedEncodingException uee) {
-                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
-                    return null;
+        try {
+            // sent request
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST,
+                    url, null,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Log.d(TAG, "add card success :" +response.toString());
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.d(TAG, "add card fail :" + error.toString());
                 }
-            }
-        };
-        mQueue.add(jsonObjectRequest);
-    }
+            }) {
+                @Override
+                public Map<String, String> getHeaders() {
+                    HashMap<String, String> headers = new HashMap<>();
+                    headers.put("Content-Type", "application/json");
+                    return headers;
+                }
+                @Override
+                public byte[] getBody() {
+                    try {
+                        return requestBody.getBytes("utf-8");
+                    } catch (UnsupportedEncodingException uee) {
+                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", requestBody, "utf-8");
+                        return null;
+                    }
+                }
+            };
+            mQueue.add(jsonObjectRequest);
+            return true;
+        }catch (Exception e){
+            Log.d(TAG, "addCard: " + e.getMessage());
+            return false;
+        }
 
-    public void deleteCard(String cardId){
+}
+
+    public boolean deleteCard(String cardId){
         String url = "https://us-central1-cardwhere.cloudfunctions.net/api/api/v1/card/" + cardId;
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.DELETE, url,null,
-                new Response.Listener<JSONObject>()
-                {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        // response
-                        Log.d(TAG, "delete card success :" +response.toString());
+
+        try{
+            JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.DELETE, url,null,
+                    new Response.Listener<JSONObject>()
+                    {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            // response
+                            Log.d(TAG, "delete card success :" +response.toString());
+                        }
+                    },
+                    new Response.ErrorListener()
+                    {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.d(TAG, "delete card fail :" + error.toString());
+                        }
                     }
-                },
-                new Response.ErrorListener()
-                {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.d(TAG, "delete card fail :" + error.toString());
-                    }
-                }
-        );
-        mQueue.add(jsonObjectRequest);
+            );
+            mQueue.add(jsonObjectRequest);
+            return true;
+        }catch (Exception e){
+            Log.d(TAG, "deleteCard: " + e.getMessage());
+            return false;
+        }
     }
 
 
