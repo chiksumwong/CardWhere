@@ -19,4 +19,6 @@
     <string name="scan_camera">相機</string>
     <string name="scan_gallery">圖庫</string>
     <string name="scan_message">加入卡片</string>
+
+    <string name="delete">刪除</string>
 </resources>

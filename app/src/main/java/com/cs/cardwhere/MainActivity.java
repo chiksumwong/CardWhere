@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
-import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,7 +21,6 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -37,12 +35,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     protected Location mLastLocation;
     protected LocationRequest mLocationRequest;
 
-    protected Geocoder mGeocoder;
-
-    // google services location
-    private FusedLocationProviderClient fusedLocationClient;
-
-
     double mLatitude;
     double mLongitude;
 
@@ -55,10 +47,8 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
         initToolbar();
         // Init Bottom Navigation View => set two fragment card and account
         initBottomNavigationView();
-
         // Init Current Location
         initLocation();
-
     }
 
     private void initToolbar(){
@@ -92,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                     selectedFragment = new ProfileFragment();
                     break;
             }
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment).commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, selectedFragment, "MainFragmentsTag").commit();
 
             return true;
         }
@@ -103,28 +93,6 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.card_toolbar_menu, menu);
-
-//        // Get the SearchView and set the searchable configuration
-//        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-//        SearchView searchView = (SearchView) menu.findItem(R.id.search).getActionView();
-//        // Assumes current activity is the searchable activity
-//        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-//        searchView.setQueryHint("Enter Company Name");
-//
-//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-//            @Override
-//            public boolean onQueryTextSubmit(String query) {
-//                // Todo on search text submit
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onQueryTextChange(String newText) {
-//                // Todo on search text change
-//                return false;
-//            }
-//        });
-
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -139,13 +107,17 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
                 intent = new Intent(this, ScanCardActivity.class);
                 startActivity(intent);
                 return true;
-
+            case R.id.refresh:
+                // initial fragment is Card List Fragment
+                getSupportFragmentManager().beginTransaction().replace(R.id.fragment_container, new CardFragment()).commit();
+                return true;
             default: return super.onOptionsItemSelected(item);
         }
 
     }
 
 
+    // get current location
     public void initLocation(){
         // GoogleApiClient allows to connect to remote services, the two listeners are the first
         // two interfaces the current class implements
@@ -199,9 +171,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     @Override
-    public void onConnectionSuspended(int i) {
-
-    }
+    public void onConnectionSuspended(int i) {}
 
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
@@ -213,9 +183,7 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
     }
 
     @Override
-    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-
-    }
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {}
 
     @Override
     public void onLocationChanged(Location location) {

@@ -6,11 +6,6 @@
         android:icon="@drawable/ic_business_card_black_24dp"
         android:title="@string/title_card" />
 
-    <!--<item-->
-        <!--android:id="@+id/nav_camera"-->
-        <!--android:icon="@drawable/ic_photo_camera_black_24dp"-->
-        <!--android:title="@string/title_camera" />-->
-
     <item
         android:id="@+id/nav_account"
         android:icon="@drawable/ic_account_box_black_24dp"

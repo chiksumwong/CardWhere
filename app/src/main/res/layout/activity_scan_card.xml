@@ -184,39 +184,10 @@
                         app:layout_constraintRight_toRightOf="parent"
                         android:contentDescription="select_image_for_text_recognition" />
 
-                    <com.cs.cardwhere.GraphicUtils.GraphicOverlay
-                        android:id="@+id/graphic_overlay"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        app:layout_constraintTop_toTopOf="@id/iv_card_image"
-                        app:layout_constraintBottom_toBottomOf="@id/iv_card_image"
-                        app:layout_constraintLeft_toLeftOf="@id/iv_card_image"
-                        app:layout_constraintRight_toRightOf="@id/iv_card_image" />
-
                 </LinearLayout>
             </androidx.cardview.widget.CardView>
 
         </LinearLayout>
     </ScrollView>
-
-    <!--<ImageView-->
-        <!--android:id="@+id/iv_card_image"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:scaleType="fitStart"-->
-        <!--app:layout_constraintTop_toBottomOf="parent"-->
-        <!--app:layout_constraintBottom_toTopOf="parent"-->
-        <!--app:layout_constraintLeft_toLeftOf="parent"-->
-        <!--app:layout_constraintRight_toRightOf="parent"-->
-        <!--android:contentDescription="select_image_for_text_recognition" />-->
-
-    <!--<com.cs.cardwhere.GraphicUtils.GraphicOverlay-->
-        <!--android:id="@+id/graphic_overlay"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--app:layout_constraintTop_toTopOf="@id/iv_card_image"-->
-        <!--app:layout_constraintBottom_toBottomOf="@id/iv_card_image"-->
-        <!--app:layout_constraintLeft_toLeftOf="@id/iv_card_image"-->
-        <!--app:layout_constraintRight_toRightOf="@id/iv_card_image" />-->
 
 </RelativeLayout>

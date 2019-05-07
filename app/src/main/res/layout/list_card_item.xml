@@ -55,6 +55,12 @@
                 android:id="@+id/textAddress"
                 android:text="Address"/>
 
+            <Button
+                android:id="@+id/btn_delete"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/delete" />
+
 
         </LinearLayout>
 

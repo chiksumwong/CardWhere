@@ -38,16 +38,15 @@ public class CardFragment extends Fragment {
     private void setViewPager(){
         // Create Fragment
         CardListFragment cardListFragment = new CardListFragment();
-        CardsMapsFragment cardsMapsFragment = new CardsMapsFragment();
+        CardMapFragment cardMapFragment = new CardMapFragment();
 
 
         List<Fragment> fragmentList = new ArrayList<Fragment>();
 
         fragmentList.add(cardListFragment);
-        fragmentList.add(cardsMapsFragment);
+        fragmentList.add(cardMapFragment);
 
-        CardFragmentPagerAdapter myFragmentAdapter = new CardFragmentPagerAdapter(getChildFragmentManager(), fragmentList, getContext());
+        CardFragmentPagerAdapter myFragmentAdapter = new CardFragmentPagerAdapter(getChildFragmentManager(), fragmentList, getActivity());
         mViewPager.setAdapter(myFragmentAdapter);
     }
-
 }
