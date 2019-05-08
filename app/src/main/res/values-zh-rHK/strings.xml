@@ -21,4 +21,6 @@
     <string name="scan_message">加入卡片</string>
 
     <string name="delete">刪除</string>
+    <string name="wearable">在手錶上顯示</string>
+
 </resources>

@@ -187,11 +187,11 @@ public class MainActivity extends AppCompatActivity implements GoogleApiClient.C
 
     @Override
     public void onLocationChanged(Location location) {
-        mLatitude = location.getLatitude();
-        mLongitude=location.getLongitude();
-
-        //log the result
-        Log.d("main", "onLocationChanged: get the latitude" + mLatitude);
-        Log.d("main", "onLocationChanged: get the longitude" + mLongitude);
+//        mLatitude = location.getLatitude();
+//        mLongitude=location.getLongitude();
+//
+//        //log the result
+//        Log.d("main", "onLocationChanged: get the latitude" + mLatitude);
+//        Log.d("main", "onLocationChanged: get the longitude" + mLongitude);
     }
 }
